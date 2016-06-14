@@ -19,6 +19,8 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -28,7 +30,7 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan({ "com.cti.*" })
 @PropertySource("classpath:message.properties")
 @Import({ SecurityConfig.class })
-public class AppConfig {
+public class AppConfig extends WebMvcConfigurerAdapter {
 
 	private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "com.cti.model";
 
@@ -115,4 +117,8 @@ public class AppConfig {
 		return viewResolver;
 	}
 
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
 }

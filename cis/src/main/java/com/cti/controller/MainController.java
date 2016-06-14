@@ -33,7 +33,7 @@ public class MainController {
 				&& !(authentication instanceof AnonymousAuthenticationToken)
 				&& authentication.isAuthenticated()) {
 
-			model.setViewName("hello");
+			model.setViewName("index");
 		} else {
 			model.setViewName("login");
 		}
@@ -67,6 +67,7 @@ public class MainController {
 		}
 
 		if (logout != null) {
+			
 			model.addObject("msg", "You've been logged out successfully.");
 		}
 		model.setViewName("login");

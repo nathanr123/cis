@@ -3,6 +3,7 @@ package com.cti.dao;
 import java.util.List;
 
 import com.cti.model.User;
+import com.cti.model.UserDetail;
 
 public interface UserDAO {
 	
@@ -19,4 +20,8 @@ public interface UserDAO {
 	public List<User> listUsers();	
 	
 	public List<User> listUsers(List<String> userList);
+
+	List<User> listAllUsers(String username);
+
+	List<UserDetail> listUser(String username);
 }

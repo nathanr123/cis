@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cti.dao.UserDAO;
 import com.cti.model.User;
+import com.cti.model.UserDetail;
 
 /**
  * @author nathanr_kamal
@@ -71,6 +72,20 @@ public class UserServiceEx implements UserService {
 	@Override
 	public List<User> listUsers() {
 		return userDAO.listUsers();
+	}
+	
+	
+	
+	
+	
+	@Override
+	public List<User> listAllUsers(String username) {
+		return userDAO.listAllUsers(username);
+	}
+	
+	@Override
+	public List<UserDetail> listUser(String username) {
+		return userDAO.listUser(username);
 	}
 
 	@Override

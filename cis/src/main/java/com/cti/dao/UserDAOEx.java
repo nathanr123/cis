@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 import com.cti.model.User;
 import com.cti.model.UserAttempts;
 import com.cti.model.UserDetail;
-import com.cti.model.UsersGroupList;
+
 
 /**
  * @author nathanr_kamal
@@ -79,6 +79,24 @@ public class UserDAOEx implements UserDAO {
 		return getCurrentSession().createQuery("from User").list();
 	}
 
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<User> listAllUsers(String username) {
+		String s = String.format("FROM User WHERE username= \'%s\'",
+				username);
+		return getCurrentSession().createQuery(s).list();
+	}
+	
+	@Override
+	public List<UserDetail> listUser(String username) {
+		String s = String.format("FROM UserDetail WHERE username= \'%s\'",
+				username);
+		return getCurrentSession().createQuery(s).list();
+	}
+	
+	
+	
 	@Override
 	public boolean updatePassword(User user) {
 		try {
@@ -101,6 +119,7 @@ public class UserDAOEx implements UserDAO {
 		if (userList != null) {
 			List<User> usersList = new ArrayList<User>();
 
+			
 			for (Iterator<String> iterator = userList.iterator(); iterator
 					.hasNext();) {
 				String user = (String) iterator.next();
@@ -162,8 +181,6 @@ public class UserDAOEx implements UserDAO {
 		LinkedHashSet<String> childList = new LinkedHashSet<String>();
 
 		childList.add(UserAttempts.class.getName());
-
-		childList.add(UsersGroupList.class.getName());
 
 		childList.add(UserDetail.class.getName());
 

@@ -3,121 +3,95 @@
 <html>
 <head>
 <title>Login Page</title>
-<style>
-.error {
-	margin: 100px auto;
-	width: 300px;
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: #a94442;
-	background-color: #f2dede;
-	border-color: #ebccd1;
-}
 
-.msg {
-	margin: 100px auto;
-	width: 300px;
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="resources/bootstrap/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="resources/dist/css/AdminLTE.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="resources/plugins/iCheck/square/blue.css">
 
-#login-box {
-	color: white;
-	width: 300px;
-	padding: 20px;
-	margin: 100px auto;
-}
-
-#login-table {
-	color: black;
-}
-
-@font-face {
-	font-family: 'SegoeUI_Family';
-	font-style: normal;
-	font-weight: 700;
-	src: local('Segoe UI Bold'), local('SegoeUI-bold'), local('segoeuib');
-}
-
-@font-face {
-	font-family: 'SegoeUI_Family';
-	font-style: normal;
-	font-weight: 600;
-	src: local('Segoe UI Semibold'), local('SegoeUI-Semibold');
-}
-
-@font-face {
-	font-family: 'SegoeUI_Family';
-	font-style: normal;
-	font-weight: 400;
-	src: local('Segoe UI'), local('SegoeUI');
-}
-
-@font-face {
-	font-family: 'SegoeUI_Family';
-	font-style: normal;
-	font-weight: 300;
-	src: local('Segoe UI Light'), local('SegoeUI-Light');
-}
-
-BODY {
-	font-family: 'SegoeUI_Family';
-}
-
-.boldtext {
-	font-family: 'Segoe UI';
-	font-weight: 700;
-	color: black;
-}
-
-.normaltext {
-	font-family: 'Segoe UI';
-}
-</style>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
-<body onload='document.loginForm.username.focus();'>
 
-	<div id="login-box">
+<body class="hold-transition login-page" onload='document.loginForm.username.focus();' >
 
-		<p class="boldtext">Sign in with Username and Password</p>
+  <div class="login-box">
+  <div class="login-logo">
+    <a href="login"><b>CTI</b> Login</a>
+  </div>
+ 	<div id="login-box">  
+ <div class="login-box-body">
+    <p class="login-box-msg">Sign in to start your session</p>
+
+
+
 
 		<form name='loginForm' action="<c:url value='/login' />" method='POST'>
+ <div class="form-group has-feedback">
+ <div class="form-group has-feedback"><input type='text' class="form-control" name='username' placeholder='Username'>	
+<span class="glyphicon glyphicon-user form-control-feedback"></span>	</div>
+ <div class="form-group has-feedback">	
+					 <input type='password' class="form-control" name='password' placeholder='Password' />      
+<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+</div>
+      
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
 
-			<table id="login-table">
-				<tr>
-					<td style="width: 35%">Username</td>
-					<td style="width: 65%"><input type='text' name='username'></td>
-				</tr>
-				<tr>
-					<td style="width: 35%">Password</td>
-					<td style="width: 65%"><input type='password' name='password' /></td>
-				</tr>
-				<tr>
-					<td colspan='2' align="right"><input class="normaltext"
-						name="submit" type="submit" value="Login" /></td>
-				</tr>
-			</table>
-
+ 
+			
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-
+</div>
 		</form>
+</div>
+</div>
+</div>
 
-	</div>
 	<p>
 		<c:if test="${not empty error}">
-			<div class="error">${error}</div>
+			<div class="callout callout-danger">
+                <h4 align = "center"><b>Error!</b></h4>
+
+              </div>
+
 		</c:if>
 		<c:if test="${not empty msg}">
-			<div class="msg">${msg}</div>
+		<div class="callout callout-success">
+                <h4 align = "center"><b>You've been logged out successfully.</b></h4>
+              </div>
+			
 		</c:if>
 	</p>
+	<!-- jQuery 2.1.4 -->
+<script src="resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="resources/plugins/iCheck/icheck.min.js"></script>
+<script>
+  $(function () {
+    $('input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%' // optional
+    });
+  });
+</script>
+	
 </body>
 </html>

@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -32,7 +32,7 @@ import com.cti.service.UserDetailsService;
 import com.cti.service.UserService;
 
 @Controller
-@EnableWebSecurity
+@EnableWebMvcSecurity
 public class UserController {
 
 	@Autowired
@@ -131,7 +131,7 @@ public class UserController {
 
 			mav.addObject("msg", "Password Changed Successfully");
 
-			mav.setViewName("hello");
+			mav.setViewName("index");
 		}
 
 		return mav;
@@ -173,7 +173,7 @@ public class UserController {
 			mav.addObject("msg", "New User " + user.getUsername()
 					+ " Created Successfully");
 
-			mav.setViewName("userdetail");
+			mav.setViewName("index");
 
 			return mav;
 		}
@@ -253,7 +253,7 @@ public class UserController {
 					.getUsername())) {
 				userDetailService.updateUserDetail(userDetail);
 
-				view = "hello";
+				view = "index";
 
 				msg = "Your Profile Updated Successfully !!";
 
@@ -288,6 +288,27 @@ public class UserController {
 
 	}
 
+	@RequestMapping(value = "/detailUser", method = RequestMethod.GET)
+	public ModelAndView detailUser(@RequestParam("user") String user,
+			Map<String, Object> model) {
+		ModelAndView mav = new ModelAndView();
+		
+		List<User> us = userService.listAllUsers(user);
+		
+		List<UserDetail> ud = userService.listUser(user);
+		
+		mav.addObject("userslist",us);
+		mav.addObject("userlist",ud);
+
+		mav.setViewName("listalluserdetails");
+
+		return mav;
+
+	}
+	
+	
+	
+	
 	public List<UserDetail> getAllUsersDetail() {
 		List<UserDetail> userDetailList = new ArrayList<UserDetail>();
 
