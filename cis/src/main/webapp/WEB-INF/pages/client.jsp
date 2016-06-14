@@ -65,6 +65,7 @@
 					document.getElementById("logoutForm").submit();
 				}
 			</script>
+			</form>
 
 			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">

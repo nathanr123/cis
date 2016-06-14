@@ -10,6 +10,8 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- DataTables -->
+  <link rel="stylesheet" href="resources/plugins/datatables/dataTables.bootstrap.css">
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -46,7 +48,7 @@
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 
-
+</form>
 			<script>
 				function formSubmit() {
 					document.getElementById("logoutForm").submit();
@@ -272,55 +274,46 @@
     </section>
 
    
-
-<!-- jQuery 2.2.0 -->
-<script src="resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="resources/bootstrap/js/bootstrap.min.js"></script>
-<!-- FastClick -->
-<script src="resources/plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="resources/dist/js/app.min.js"></script>
-<!-- Sparkline -->
-<script src="resources/plugins/sparkline/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
-<script src="resources/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="resources/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- SlimScroll 1.3.0 -->
-<script src="resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- ChartJS 1.0.1 -->
-<script src="resources/plugins/chartjs/Chart.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="resources/dist/js/pages/dashboard2.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="resources/dist/js/demo.js"></script>
-
-
 </c:if>
 
-		
-
-	<c:if test="${not empty msg}">
+	<br>
+<br>
+<c:if test="${not empty msg}">
 		<tr>
 			<td colspan="2" align="center">${msg}</td>
 		</tr>
 	</c:if>
 
-	<h3>User Detail</h3>
+  
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+            <div class="box-header">
+            <h3>User Detail</h3>
 	
 	<c:if test="${!empty userslist}">
-	
-            <div class="box-body no-padding">
-              <table class="table table-striped">
+		
 
-	<tr>
+            <div class="box-body no-padding">
+              
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
 				<th>S.No</th>
 				<th>User Name</th>
 				<th>Name</th>
 				<th>Email</th>
 				<th>Telephone</th>
-				</tr>
-				<c:set var="sno" value = "0"/>
+			</tr>
+                </thead>
+                <tbody>
+               
+                  	<c:set var="sno" value = "0"/>
 			<c:forEach items="${userlist}" var="userDetail">
 				<tr>
 			<td><c:set var="sno" value = "${sno+1 }"/>
@@ -331,20 +324,18 @@
 					<td>${userDetail.mobileno}</td>
 			</tr>
 			</c:forEach>
-		</table>
-	</c:if>
-	
-	
-	<c:if test="${!empty userlist}">
-	
-            <div class="box-body no-padding">
-              <table class="table table-striped">
-
-	<tr>
-			
+            
+                </tbody>
+               
+                <thead>
+                <tr>
 				<th>Priority</th>
 				<th>User Role</th>
-				</tr>
+			</tr>
+                </thead>
+                <tbody>
+               
+                  	<c:set var="sno" value = "0"/>
 			<c:forEach items="${userslist}" var="userDetail">
 				<tr>
 	
@@ -352,9 +343,55 @@
 					<td>${userDetail.userrole}</td>
 			</tr>
 			</c:forEach>
-		</table>
+            
+                </tbody>
+               
 		
-	</c:if>
-	</sec:authorize>
+                
+              </table>
+              
+            </div>
+            <!-- /.box-body -->
+            </div>
+            </c:if>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  
+<!-- jQuery 2.2.0 -->
+<script src="resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
+<!-- Bootstrap 3.3.6 -->
+<script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="resources/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="resources/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="resources/dist/js/app.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="resources/dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+</sec:authorize>
 </body>
 </html>
