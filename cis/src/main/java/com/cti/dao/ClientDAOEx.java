@@ -37,11 +37,11 @@ public class ClientDAOEx implements ClientDAO {
 	}
 
 	@Override
-	public boolean saveClient(Client emp) {
+	public boolean saveClient(Client client) {
 		try {
 			
 
-			getCurrentSession().save(emp);
+			getCurrentSession().save(client);
 
 			return true;
 
@@ -53,9 +53,9 @@ public class ClientDAOEx implements ClientDAO {
 	}
 
 	@Override
-	public boolean updateClient(Client emp) {
+	public boolean updateClient(Client client) {
 		try {
-			getCurrentSession().update(emp);
+			getCurrentSession().update(client);
 			return true;
 		} catch (Exception e) {
 		
@@ -67,9 +67,9 @@ public class ClientDAOEx implements ClientDAO {
 	 
 
 		@Override
-		public Client getClientById(String emp) {
-			Client empl = (Client) getCurrentSession().get(Client.class, emp);
-			return empl;
+		public Client getClientById(String client) {
+			Client clients = (Client) getCurrentSession().get(Client.class, client);
+			return clients;
 		}
 
 		/*
@@ -88,16 +88,16 @@ public class ClientDAOEx implements ClientDAO {
 		@Override
 		public List<Client> listClient(List<String> grpList) {
 			if (grpList != null) {
-				List<Client> userGroupList = new ArrayList<Client>();
+				List<Client> clientList = new ArrayList<Client>();
 
 				for (Iterator<String> iterator = grpList.iterator(); iterator
 						.hasNext();) {
 					String group = iterator.next();
 
-					userGroupList.add(getClientById(group));
+					clientList.add(getClientById(group));
 
 				}
-				return userGroupList;
+				return clientList;
 			} else
 				return null;
 		}
@@ -117,36 +117,36 @@ public class ClientDAOEx implements ClientDAO {
 	
 	
 	@Override
-	public boolean removeClient(String employeename) {
+	public boolean removeClient(String clientname) {
 
-		return deleteAllClientRecords(employeename);
+		return deleteAllClientRecords(clientname);
 	}
 
-	private String getDeleteQuery(String table, String empname) {
+	private String getDeleteQuery(String table, String clientname) {
 
 		return String.format("DELETE FROM %s WHERE client_ID= \'%s\'", table,
-				empname);
+				clientname);
 	}
 
-	private List<String> getAllDeletingQueries(String empname) {
+	private List<String> getAllDeletingQueries(String clientname) {
 
 		List<String> qryList = new ArrayList<String>();
 
 		Iterator<String> it = getAllClientChildNames().iterator();
 
 		while (it.hasNext()) {
-			qryList.add(getDeleteQuery(it.next(), empname));
+			qryList.add(getDeleteQuery(it.next(), clientname));
 		}
 
 		return qryList;
 	}
 
-	private boolean deleteAllClientRecords(String empname) {
+	private boolean deleteAllClientRecords(String clientname) {
 
 		try {
 			Session session = getCurrentSession();
 
-			List<String> it = getAllDeletingQueries(empname);
+			List<String> it = getAllDeletingQueries(clientname);
 
 			for (Iterator<String> iterator = it.iterator(); iterator.hasNext();) {
 

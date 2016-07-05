@@ -27,8 +27,8 @@ public class ClientServiceEx implements ClientService {
 	 * @see com.cti.service.UserService#saveUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean saveClient(Client it) {
-		return clientDAO.saveClient(it);
+	public boolean saveClient(Client client) {
+		return clientDAO.saveClient(client);
 
 	}
 
@@ -38,8 +38,8 @@ public class ClientServiceEx implements ClientService {
 	 * @see com.cti.service.UserService#updateUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean updateClient(Client it) {
-		return clientDAO.updateClient(it);
+	public boolean updateClient(Client client) {
+		return clientDAO.updateClient(client);
 
 	}
 
@@ -49,8 +49,8 @@ public class ClientServiceEx implements ClientService {
 	 * @see com.cti.service.UserService#removeUser(java.lang.String)
 	 */
 	@Override
-	public boolean removeClient(String it) {
-		return clientDAO.removeClient(it);
+	public boolean removeClient(String client) {
+		return clientDAO.removeClient(client);
 	}
 	
 	@Override
@@ -64,8 +64,8 @@ public class ClientServiceEx implements ClientService {
 	 * @see com.cti.service.UserService#getUserById(java.lang.String)
 	 */
 	@Override
-	public Client getClientById(String it) {
-		return clientDAO.getClientById(it);
+	public Client getClientById(String client) {
+		return clientDAO.getClientById(client);
 	}
 
 	/*

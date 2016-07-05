@@ -68,8 +68,8 @@
 			</script>
 	
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -238,7 +238,9 @@
         </li>
         
         
-        <li class="treeview">
+             
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -263,13 +265,17 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
+       
+        --%>    
+       
+
         
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -286,7 +292,7 @@
 
    
 
-</c:if>
+
 
 <br>
 <br>
@@ -319,8 +325,8 @@
 				<th>Contact Person</th>
 				<th>Department</th>
 				<th>Address</th>
-				<th>&nbsp;</th>
-				<th>&nbsp;</th>
+				<th></th>
+				<th></th>
 			</tr>
                 </thead>
                 <tbody>
@@ -336,8 +342,8 @@
 					<td>${clientDetail.contactperson}</td>
 					<td>${clientDetail.department}</td>
 					<td>${clientDetail.address}</td>
-					<td> <a href="${contextPath}/loadclient?client=${clientDetail.client_ID}">Update</a></td>
-					<td><a href="${contextPath}/deleteclient?client=${clientDetail.client_ID}">Delete</a></td>
+					<td> <a href="${contextPath}/loadclient?client=${clientDetail.client_ID}"><i class="fa fa-refresh"></i></a></td>
+					<td><a href="${contextPath}/deleteclient?client=${clientDetail.client_ID}"><i class="fa fa-trash-o"></i></a></td>
 				</tr>
 			</c:forEach>
                 
@@ -393,7 +399,16 @@
     });
   });
 </script>
+</div>
 
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 </sec:authorize>
 
 </body>

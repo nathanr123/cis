@@ -9,7 +9,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Update Purchase</title>
-
+<script src='<c:url value="/resources/js/jquery.js" />'
+	type="text/javascript"></script>
+<script src='<c:url value="/resources/js/bpopup.js" />'
+	type="text/javascript"></script>
+<link href='<c:url value="/resources/css/style.css" />' />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
@@ -46,6 +50,113 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+				function formSubmit() {
+					document.getElementById("logoutForm").submit();
+				}
+				// Removes leading whitespaces
+				function LTrim( value ) {
+					
+					var re = /\s*((\S+\s*)*)/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes ending whitespaces
+				function RTrim( value ) {
+					
+					var re = /((\s*\S+)*)\s*/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes leading and ending whitespaces
+				function trim( value ) {
+					
+					return LTrim(RTrim(value));
+					
+				}
+				function doADD() 
+				{
+					var purchasenumber = document.getElementById('purchasenumber');	 
+			 		var tpurchasenumber = trim(purchasenumber.value);
+			 		
+			 		var qty1 = document.getElementById('qty1');	 
+			 		var tqty1 = trim(qty1.value);
+			 		var qty2 = document.getElementById('qty2');	 
+			 		var tqty2 = trim(qty2.value);
+			 		var unitrate = document.getElementById('unitrate');	 
+			 		var tunitrate = trim(unitrate.value);
+			 		var tax = document.getElementById('tax');	 
+			 		var ttax = trim(tax.value);
+			 		var taxamount = document.getElementById('taxamount');	 
+			 		var ttaxamount = trim(taxamount.value);
+			 		var totalprice = document.getElementById('totalprice');	 
+			 		var ttotalprice = trim(totalprice.value);
+			 		var totalpricetax = document.getElementById('totalpricetax');	 
+			 		var ttotalpricetax = trim(totalpricetax.value);
+			 		
+
+					if ( tpurchasenumber.length > 0 && 
+							
+							tqty1.length > 0 && 
+							tqty2.length>0 &&
+							tunitrate.length >0&& 
+							ttax >0 && 
+							ttaxamount.length > 0 && 
+							ttotalprice.length >0 &&
+							ttotalpricetax>0 
+							) 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+				function doADD1() 
+				{
+			 		var purchasenumber = document.getElementById('purchasenumber');	 
+			 		var tpurchasenumber = trim(purchasenumber.value);
+			 		var purchasedate = document.getElementById('purchasedate');	 
+			 		var tpurchasedate = trim(purchasedate.value);
+			 		var purchasedeldate = document.getElementById('purchasedeldate');	 
+			 		var tpurchasedeldate = trim(purchasedeldate.value);
+			 		var customername = document.getElementById('customername');	 
+			 		var tcustomername = trim(customername.value);
+			 		
+					if ( tpurchasenumber.length > 0 && 
+							tpurchasedate.length > 0 && 
+							tpurchasedeldate.length>0 &&
+							tcustomername.length > 0 ) 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+				function setValue(purchasenumber,qty,unitrate,tax,taxamount,totalprice,totalpricetax)
+				{	
+					var a = [purchasenumber,qty,unitrate,tax,taxamount,totalprice,totalpricetax,];
+					document.getElementById("radio").value=a;
+					document.getElementById("purchaseno").value = a[0];
+					document.getElementById("qtys1").value = a[1];
+					document.getElementById("qtys2").value = a[1];
+					document.getElementById("unitrates").value = a[2];
+					document.getElementById("taxs").value = a[3];
+					document.getElementById("taxamounts").value = a[4];
+					document.getElementById("totalprices").value = a[5];
+					document.getElementById("totalpricetaxs").value = a[6];
+
+		
+				}
+				function deleteitem()
+				{
+					var p = document.getElementById("purchaseid").value;
+					window.location.replace("deletepurchaseitemdetail?purchaseitemdetail="+ p);
+				}
+			</script>
 
 <style>
 .error {
@@ -63,22 +174,18 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-
-<!-- For login user -->
+		<!-- For login user -->
 		<c:url value="/logout" var="logoutUrl" />
 		<form action="${logoutUrl}" method="post" id="logoutForm">
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-</form>
+		</form>
 
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
+		
 
-		<c:if test="${pageContext.request.userPrincipal.name != null}">
+
 			<div class="wrapper">
+		<c:if test="${pageContext.request.userPrincipal.name != null}">
 
 				<header class="main-header"> <!-- Logo --> <a
 					href="${contextPath}" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -214,36 +321,41 @@
 						</ul></li>
 
 
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-briefcase"></i> <span>Jobs</span> <i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
-						<ul class="treeview-menu">
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>
-									List Jobs</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>
-									New Job</a></li>
-						</ul></li>
+			      
+    <%--
+      <li class="treeview">
+          <a href="#">
+            <i class="fa fa-briefcase"></i>
+            <span>Jobs</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> List Jobs</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>  New Job</a></li>
+          </ul>
+        </li>
 
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-file-text-o"></i> <span>Reports</span> <i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
-						<ul class="treeview-menu">
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Item
-									Based</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Invoice
-									Based</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Job
-									Based</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant
-									Based</a></li>
-						</ul></li>
+	  <li class="treeview">
+          <a href="#">
+            <i class="fa fa-file-text-o"></i>
+            <span>Reports</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Item Based</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Invoice Based</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Job Based</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
+          </ul>
+        </li>
+       
+        --%>    
+       
 
 				</ul>
 
 				</section> <!-- /.sidebar --> </aside>
-
+</c:if>
 				<!-- Content Wrapper. Contains page content -->
 				<div class="content-wrapper">
 					<!-- Content Header (Page header) -->
@@ -253,8 +365,7 @@
 						<li><a href="${contextPath}"><i class="fa fa-home"></i>
 								Home</a></li>
 						<li>Purchases</li>
-						<li><a href="${contextPath}/listpurchase">List Purchases</a>
-						</li>
+						<li><a href="${contextPath}/listpurchase">List Purchases</a></li>
 						<li class="active">Update Purchase</li>
 					</ol>
 					</section>
@@ -284,185 +395,338 @@
 					<script src="resources/dist/js/pages/dashboard2.js"></script>
 					<!-- AdminLTE for demo purposes -->
 					<script src="resources/dist/js/demo.js"></script>
-		</c:if>
+		
 		<div align="center">
-			<form:form action="updatepurchase" method="post"
+			<form:form action="updatepurchase" onsubmit="return doADD1();" method="post"
 				commandName="purchaseForm">
-				<form:hidden path="purchase_ID"
+				<form:hidden path="purchase_ID" id="purchaseid"
 					value="${purchaseForm.getPurchase_ID()}" />
-
-				<br>
-				<br>
-				<div class="box box-primary">
-					<div class="box-header with-border">
-						<h3 class="box-title">Update Purchase</h3>
-					</div>
-					<!-- /.box-header -->
-					<!-- form start -->
-
-					<div class="box-body">
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Purchase Number:</label>
-
-							<div class="col-sm-10">
-								<form:input path="purchase_number" class="form-control"
-									value="${purchaseForm.getPurchase_number()}" />
-
-							</div>
-
-						</div>
-
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Purchase Date:</label>
-
-							<div class="col-sm-10">
-								<form:input path="purchase_date" class="form-control" />
-
-							</div>
-
-						</div>
-
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Purchase Delivery
-								Date:</label>
-
-							<div class="col-sm-10">
-								<form:input path="purchase_del_date" class="form-control" />
-
-							</div>
-
-						</div>
-
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Customer Name:</label>
-
-							<div class="col-sm-10">
-								<form:select path="purchase_cust_name" class="form-control">
-									<form:option value="0" label="--- Select ---" />
-									<c:forEach items="${cust}" var="clientDetail">
-
-										<form:option value="${clientDetail.client_ID}"
-											label='${clientDetail.clientname}' />
-
-									</c:forEach>
-								</form:select>
-
-							</div>
-
-						</div>
-
-					</div>
-					<!-- /.box-body -->
-					<div class="box-footer">
-
-						<button type="submit" class="btn btn-primary pull-center">Update
-							Purchase</button>
-					</div>
-
-				</div>
-
-				<div align=center>
-
-					<div class="box-footer">
-
-						<button type="button" class="btn btn-primary pull-center"
-							data-toggle="modal" data-target="#myModal1">Add Purchase
-							Item</button>
-						<button type="button" class="btn btn-primary pull-center"
-							data-toggle="modal" data-target="#myModal2">Modify
-							Purchase Item</button>
-						<button type="button" class="btn btn-primary pull-center"
-							data-toggle="modal" data-target="#myModal3">Delete
-							Purchase Item</button>
-
-
-						<!-- Modal -->
-						<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
-							aria-labelledby="myModalLabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<h4 class="modal-title" id="myModalLabel">New Purchase
-											Item</h4>
-									</div>
-									<div class="modal-body">...</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-										<button type="button" class="btn btn-primary">Save
-											changes</button>
-									</div>
-								</div>
-							</div>
-
-
-
-						</div>
-					</div>
-
-
-				</div>
+	<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                 <h3 class="box-title">Update Purchase</h3>
+            
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            
+              
+                <div class="form-group">
+                  
+<form:input id="purchasenumber" placeholder="Purchase Number" path="purchase_number" class="form-control"/>                  </div>
+              
+               
+                <div class="form-group">
+                 
+   <form:input id="purchasedate" placeholder="Purchase Date" path="purchase_date" class="form-control"/>                   
+                  </div>
+              
+               
+                
+                 <div class="form-group">
+                 
+ <form:input id="purchasedeldate" placeholder="Purchase Delivery Date" path="purchase_del_date" class="form-control"/>                 
+                </div>
+                
+                   <div class="form-group">
+             
+  <form:select id="customername" path="purchase_cust_name" class = "form-control">
+							<form:option value="0" label="Customer Name" />
+							<c:forEach items="${cust}" var="clientDetail">
+							
+							<form:option value="${clientDetail.client_ID}" label='${clientDetail.clientname}'/>
+							
+							</c:forEach>
+						</form:select>                  </div>
+                
+               
+              <!-- /.box-body -->
+              <div class="box-footer">
+         
+                <button type="submit" class="btn btn-primary pull-center">Update Purchase</button>
+	</div>
+	</div>
+	</div>
+	</div>
 	
-							<!-- Modal -->
-						<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
-							aria-labelledby="myModalLabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<h4 class="modal-title" id="myModalLabel">Modify Purchase
-											Item</h4>
-									</div>
-									<div class="modal-body">...</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-										<button type="button" class="btn btn-primary">Save
-											changes</button>
-									</div>
-								</div>
-							</div>
-							</div>
-							
-							<!-- Modal -->
-						<div class="modal fade" id="myModal3" tabindex="-1" role="dialog"
-							aria-labelledby="myModalLabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<h4 class="modal-title" id="myModalLabel">Delete Purchase
-											Item</h4>
-									</div>
-									<div class="modal-body">...</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-										<button type="button" class="btn btn-primary">Save
-											changes</button>
-									</div>
-								</div>
-							</div>
-							
-							
-						</div>
-							
-							
 			</form:form>
+			<div align=center>
+
+				<section class="content">
+				<div class="row">
+
+					<div class="col-xs-12">
+
+						<div class="box">
+							<div class="box-header">
+								<h3>Purchase Item List</h3>
+								<c:if test="${!empty purchaseitemdetaillist}">
+
+
+									<div class="box-body no-padding">
+
+										<!-- /.box-header -->
+										<div class="box-body">
+											<table id="example1"
+												class="table table-bordered table-striped">
+												<thead>
+													<tr>
+													<th></th>
+														<th>S.No</th>
+														<th>Purchase Number</th>
+														<th>Quantity</th>
+														<th>Unit Rate</th>
+														<th>Tax</th>
+														<th>Tax Amount</th>
+														<th>Total Price</th>
+														<th>Total Price (with tax)</th>
+
+													</tr>
+												</thead>
+												<tbody>
+
+													<c:set var="sno" value="0" />
+													<c:forEach items="${purchaseitemdetaillist}"
+														var="purchaseitemdetailDetail">
+														<tr>
+													<td>	<input type="radio" id="radio" name="radio" onclick="setValue('${purchaseitemdetailDetail.purchasenumber}','${purchaseitemdetailDetail.qty}','${purchaseitemdetailDetail.unitrate}','${purchaseitemdetailDetail.tax}', '${purchaseitemdetailDetail.taxamount}', '${purchaseitemdetailDetail.totalprice}', '${purchaseitemdetailDetail.totalpricetax}');" ></td>
+														
+															<td><c:set var="sno" value="${sno+1 }" /> <c:out
+																	value="${sno }" /></td>
+															<td>${purchaseitemdetailDetail.purchasenumber}</td>
+															<td>${purchaseitemdetailDetail.qty}</td>
+															<td>${purchaseitemdetailDetail.unitrate}</td>
+															<td>${purchaseitemdetailDetail.tax}</td>
+															<td>${purchaseitemdetailDetail.taxamount}</td>
+															<td>${purchaseitemdetailDetail.totalprice}</td>
+															<td>${purchaseitemdetailDetail.totalpricetax}</td>
+													</c:forEach>
+
+
+
+												</tbody>
+
+
+
+											</table>
+										</div>
+										<!-- /.box-body -->
+									</div>
+								</c:if>
+							</div>
+							<!-- /.box -->
+						</div>
+						<!-- /.col -->
+					</div>
+
+					<button type="button" class="btn btn-primary pull-center"
+						data-toggle="modal" data-target="#myModal1">Add Purchase
+						Item</button>
+					<button type="button" class="btn btn-primary pull-center"
+						data-toggle="modal" data-target="#myModal2">Modify
+						Purchase Item</button>
+					<button type="button" class="btn btn-primary pull-center"
+						data-toggle="modal" data-target="#myModal3">Delete
+						Purchase Item</button>
+				</div>
+				<!-- /.row --> </section>
+
+				<!-- /.content -->
+
+				<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<form:form action="createnewpurchaseitemdetail" onsubmit="return doADD();" method="post"
+									commandName="purchaseitemdetailForm">
+												<form:hidden path="product_ID"/>
+								
+				<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                 <h3 class="box-title">New Purchase Item</h3>
+            
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            
+              
+                <div class="form-group">
+                  
+ <form:input path="purchasenumber" id="purchasenumber" placeholder="Purchase Number" class="form-control" />                  </div>
+              
+               
+                <div class="form-group">
+              
+ <form:input path="qty" id="qty1" placeholder="Quantity" class="form-control"/>
+                  <form:input path="qty" id="qty2" placeholder="Unit" class="form-control"/>                   
+                  </div>
+              
+             
+                
+                 <div class="form-group">
+                 
+ <form:input path="unitrate" id="unitrate" placeholder="Unitrate" class="form-control"/>                 
+                </div>
+                
+                   <div class="form-group">
+             
+ <form:input path="tax" id="tax" placeholder="Tax" class="form-control"/>                  </div>
+                
+                 <div class="form-group">
+             
+  <form:input path="taxamount" id="taxamount" placeholder="Tax Amount" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalprice" id="totalprice" placeholder="Total Price" class="form-control"/>     				</div>
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalpricetax" id="totalpricetax" placeholder="Total Price (With tax)" class="form-control"/>  					</div>
+              
+     </div>  
+	</div>
+	</div>							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-primary">Save
+									changes</button>
+									<button type="reset" class="btn btn-primary">Reset</button>
+							</div>
+							</form:form>						</div>
+					</div>
+				</div>
+				
+			</div>
 		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					
+					<div class="modal-body">
+						<form:form action="updatepurchaseitemdetail" id="updatepurchaseitemdetail" method="post"
+			commandName="purchaseitemdetailForm">
+							
+			<form:hidden path="product_ID" 
+							value="${purchaseitemdetailForm.getProduct_ID()}" />
+					
+		<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                         <h3 class="box-title">Update Purchase Item</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            
+              <div class="box-body">
+               <div class="form-group">
+                 <form:input id="purchaseno" path="purchasenumber" placeholder="Purchase Number" class="form-control" />
+                 
+              
+                </div>
+                
+                
+                  <div class="form-group">
+              
+ <form:input path="qty" id="qtys1" placeholder="Quantity" class="form-control"/>
+                  <form:input path="qty" id="qtys2" placeholder="Unit" class="form-control"/>                   
+                  </div>
+              
+             
+                
+                 <div class="form-group">
+                 
+ <form:input path="unitrate" id="unitrates" placeholder="Unitrate" class="form-control"/>                 
+                </div>
+                
+                   <div class="form-group">
+             
+ <form:input path="tax" id="taxs" placeholder="Tax" class="form-control"/>                  </div>
+                
+                 <div class="form-group">
+             
+  <form:input path="taxamount" id="taxamounts" placeholder="Tax Amount" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalprice" id="totalprices" placeholder="Total Price" class="form-control"/>     				</div>
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalpricetax" id="totalpricetaxs" placeholder="Total Price (With tax)" class="form-control"/>  					</div>
+              
+            
+	</div>
+	</div>
+	</div>
+	</div>			
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save
+									changes</button>
+					</div>
+					</form:form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				
+					
+					<div class="modal-body">Do you really want to delete the purchase item?
+					 </div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" onclick="deleteitem();" class="btn btn-primary">Delete</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+
+		</div>
+
+</div>
+
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
 </html>

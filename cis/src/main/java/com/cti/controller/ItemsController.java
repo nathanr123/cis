@@ -47,9 +47,9 @@ public class ItemsController {
 
 		ModelAndView mav = new ModelAndView();
 
-		Items userForm = new Items();
+		Items itemsForm = new Items();
 
-		model.put("itemsForm", userForm);
+		model.put("itemsForm", itemsForm);
 
 		mav.setViewName("items");
 
@@ -59,7 +59,7 @@ public class ItemsController {
 	
 
 	@RequestMapping(value = "/createnewitems", method = RequestMethod.POST)
-	public ModelAndView doCreateNewItems(@ModelAttribute("itemsForm") Items user,
+	public ModelAndView doCreateNewItems(@ModelAttribute("itemsForm") Items items,
 			BindingResult result, Map<String, Object> model,
 			SessionStatus status) {
 
@@ -75,21 +75,21 @@ public class ItemsController {
 		} else {
 			Date d = new Date();
 
-			user.setPart_number(user.getPart_number());
+			items.setPart_number(items.getPart_number());
 			
-			user.setDescription(user.getDescription());
+			items.setDescription(items.getDescription());
 			
 			String id = getLatestItemsId();
 			
-			user.setProduct_ID(id);
+			items.setProduct_ID(id);
 
-			user.setCreatedtime(d);
+			items.setCreatedtime(d);
 
-			user.setModifiedtime(d);
+			items.setModifiedtime(d);
 
 			
 
-			itemsService.saveItems(user);
+			itemsService.saveItems(items);
 
 			mav.addObject("msg"," New Item Created Successfully");
 
@@ -101,20 +101,20 @@ public class ItemsController {
 	}
 
 	@RequestMapping(value = "/loaditems", method = RequestMethod.GET)
-	public ModelAndView goItemsUpdate(@RequestParam("items") String user,
+	public ModelAndView goItemsUpdate(@RequestParam("items") String items,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Items userdetailForm = itemsService.getItemsById(user);
+		Items itemsForm = itemsService.getItemsById(items);
 
-		if (userdetailForm == null) {
+		if (itemsForm == null) {
 
-			userdetailForm = new Items();
+			itemsForm = new Items();
 
 		}
 
-		model.put("itemsForm", userdetailForm);
+		model.put("itemsForm", itemsForm);
 
 		mav.setViewName("updateitems");
 
@@ -123,16 +123,16 @@ public class ItemsController {
 	}
 
 	@RequestMapping(value = "/deleteitems", method = RequestMethod.GET)
-	public ModelAndView deleteItems(@RequestParam("items") String user,
+	public ModelAndView deleteItems(@RequestParam("items") String items,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		if (!itemsService.removeItems(user)) {
+		if (!itemsService.removeItems(items)) {
 
-			mav.addObject("msg", "Unable to delete " + user + ".");
+			mav.addObject("msg", "Unable to delete " + items + ".");
 		} else {
-			mav.addObject("msg", user + " successfully deleted.");
+			mav.addObject("msg", items + " successfully deleted.");
 		}
 		mav.addObject("itemslist", getAllItems());
 
@@ -144,7 +144,7 @@ public class ItemsController {
 
 	@RequestMapping(value = "/updateitems", method = RequestMethod.POST)
 	public ModelAndView updateItems(
-			@ModelAttribute("itemsForm") Items userDetail,
+			@ModelAttribute("itemsForm") Items items,
 			BindingResult result, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
@@ -164,11 +164,11 @@ public class ItemsController {
 
 			Date d = new Date();
 
-			userDetail.setCreatedtime(d);
+			items.setCreatedtime(d);
 
-			userDetail.setModifiedtime(d);
+			items.setModifiedtime(d);
 
-				itemsService.updateItems(userDetail);
+				itemsService.updateItems(items);
 
 				view = "index";
 
@@ -197,13 +197,13 @@ public class ItemsController {
 	}
 
 	public List<Items> getAllItems() {
-		List<Items> emps = itemsService.listItems();
+		List<Items> items = itemsService.listItems();
 
-		return emps;
+		return items;
 	}
 
-	private Items getItems(String username) {
-		return itemsService.getItemsById(username);
+	private Items getItems(String items) {
+		return itemsService.getItemsById(items);
 	}
 
 	@ModelAttribute("priorityLevel")
@@ -245,9 +245,9 @@ public class ItemsController {
 
 		ModelAndView mav = new ModelAndView();
 
-		Component userForm = new Component();
+		Component componentForm = new Component();
 
-		model.put("componentForm", userForm);
+		model.put("componentForm", componentForm);
 
 		mav.setViewName("component");
 
@@ -257,7 +257,7 @@ public class ItemsController {
 	
 
 	@RequestMapping(value = "/createnewcomponent", method = RequestMethod.POST)
-	public ModelAndView doCreateNewItems(@ModelAttribute("componentForm") Component user,
+	public ModelAndView doCreateNewItems(@ModelAttribute("componentForm") Component component,
 			BindingResult result, Map<String, Object> model,
 			SessionStatus status) {
 
@@ -273,32 +273,32 @@ public class ItemsController {
 		} else {
 			Date d = new Date();
 
-			user.setCtipartno(user.getCtipartno());
+			component.setCtipartno(component.getCtipartno());
 			
-			user.setCtiuspartno(user.getCtiuspartno());
+			component.setCtiuspartno(component.getCtiuspartno());
 			
-			user.setManufacturer(user.getManufacturer());
+			component.setManufacturer(component.getManufacturer());
 			
-			user.setMfgdesc(user.getMfgdesc());
+			component.setMfgdesc(component.getMfgdesc());
 			
-			user.setMfgpartno(user.getMfgpartno());
+			component.setMfgpartno(component.getMfgpartno());
 			
-			user.setPackages(user.getPackages());
+			component.setPackages(component.getPackages());
 			
-			user.setType(user.getType());
+			component.setType(component.getType());
 			
 			
 			String id = getLatestComponentId();
 			
-			user.setComp_ID(id);
+			component.setComp_ID(id);
 
-			user.setCreatedtime(d);
+			component.setCreatedtime(d);
 
-			user.setModifiedtime(d);
+			component.setModifiedtime(d);
 
 			
 
-			componentService.saveComponent(user);
+			componentService.saveComponent(component);
 
 			mav.addObject("msg"," New Component Created Successfully");
 
@@ -310,20 +310,21 @@ public class ItemsController {
 	}
 
 	@RequestMapping(value = "/loadcomponent", method = RequestMethod.GET)
-	public ModelAndView goComponentUpdate(@RequestParam("component") String user,
+	
+	public ModelAndView goComponentUpdate(@RequestParam("component") String component,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Component userdetailForm = componentService.getComponentById(user);
+		Component componentForm = componentService.getComponentById(component);
 
-		if (userdetailForm == null) {
+		if (componentForm == null) {
 
-			userdetailForm = new Component();
+			componentForm = new Component();
 
 		}
 
-		model.put("componentForm", userdetailForm);
+		model.put("componentForm", componentForm);
 
 		mav.setViewName("updatecomponent");
 
@@ -332,16 +333,16 @@ public class ItemsController {
 	}
 
 	@RequestMapping(value = "/deletecomponent", method = RequestMethod.GET)
-	public ModelAndView deleteComponent(@RequestParam("component") String user,
+	public ModelAndView deleteComponent(@RequestParam("component") String component,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		if (!componentService.removeComponent(user)) {
+		if (!componentService.removeComponent(component)) {
 
-			mav.addObject("msg", "Unable to delete " + user + ".");
+			mav.addObject("msg", "Unable to delete " + component + ".");
 		} else {
-			mav.addObject("msg", user + " successfully deleted.");
+			mav.addObject("msg", component + " successfully deleted.");
 		}
 		mav.addObject("componentlist", getAllComponent());
 
@@ -353,7 +354,7 @@ public class ItemsController {
 
 	@RequestMapping(value = "/updatecomponent", method = RequestMethod.POST)
 	public ModelAndView updateComponent(
-			@ModelAttribute("compoentForm") Component userDetail,
+			@ModelAttribute("compoentForm") Component component,
 			BindingResult result, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
@@ -373,11 +374,11 @@ public class ItemsController {
 
 			Date d = new Date();
 
-			userDetail.setCreatedtime(d);
+			component.setCreatedtime(d);
 
-			userDetail.setModifiedtime(d);
+			component.setModifiedtime(d);
 
-				componentService.updateComponent(userDetail);
+				componentService.updateComponent(component);
 
 				view = "index";
 
@@ -406,13 +407,13 @@ public class ItemsController {
 	}
 
 	public List<Component> getAllComponent() {
-		List<Component> emps = componentService.listComponent();
+		List<Component> component = componentService.listComponent();
 
-		return emps;
+		return component;
 	}
 
-	private Component getComponent(String username) {
-		return componentService.getComponentById(username);
+	private Component getComponent(String component) {
+		return componentService.getComponentById(component);
 	}
 
 	

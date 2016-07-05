@@ -47,7 +47,7 @@
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 
-</form>
+
 			<script>
 				function formSubmit() {
 					document.getElementById("logoutForm").submit();
@@ -55,9 +55,9 @@
 			</script>
 	
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
+			
 <div class="wrapper">
-
+<c:if test="${pageContext.request.userPrincipal.name != null}">
   <header class="main-header">
 
     <!-- Logo -->
@@ -211,8 +211,7 @@
           </ul>
         </li>
 
-
-        <li class="treeview">
+    <li class="treeview">
           <a href="#">
             <i class="fa fa-group"></i>
             <span>Users</span>
@@ -224,8 +223,9 @@
           </ul>
         </li>
         
-        
-        <li class="treeview">
+           
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -250,12 +250,15 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
-             </ul>
+       
+        --%>    
+       
+     </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
+</c:if>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -271,12 +274,11 @@
       </ol>
     </section>
 
-   
 
 
-</c:if>
 <br>
 <br>
+
 <c:if test="${not empty msg}">
 		<tr>
 			<td colspan="2" align="center">${msg}</td>
@@ -290,7 +292,7 @@
 
           <div class="box">
             <div class="box-header">
-          <h3>Purchase List</h3>
+           <h3>Purchase List</h3>
 	<c:if test="${!empty purchaselist}">
 		
 
@@ -301,6 +303,8 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+				
+			<tr>
 				<th>S.No</th>
 				<th>Purchase Number</th>
 				<th>Purchase Date</th>
@@ -308,25 +312,25 @@
 				<th>Customer Name</th>
 				<th>&nbsp;</th>
 				<th>&nbsp;</th>
-				<th>&nbsp;</th>
+			
+				
+		
 			</tr>
                 </thead>
                 <tbody>
-        <c:set var="sno" value = "0"/>
-			<c:forEach items="${purchaselist}" var="purchaseDetail">
-				<tr>
+               <c:set var="sno" value = "0"/>
+			<c:forEach items="${purchaselist}" var="purchaseDetail">			
+			<tr>
 				<td><c:set var="sno" value = "${sno+1 }"/>
 				<c:out value="${sno }"/></td>
-					<td>${purchaseDetail.purchase_number}</td>
+						<td>${purchaseDetail.purchase_number}</td>
 					<td>${purchaseDetail.purchase_date}</td>
 					<td>${purchaseDetail.purchase_del_date}</td>
 					<td>${purchaseDetail.purchase_cust_name}</td>
-					<td> <a href="${contextPath}/loadpurchase?purchase=${purchaseDetail.purchase_ID}">Update </a></td>
-					<td><a href="${contextPath}/deletepurchase?purchase=${purchaseDetail.purchase_ID}">Delete </a></td>
-					<td><a href="${contextPath}/listpurchaseitemdetail?purchase=${purchaseDetail.purchase_ID}">List Purchase Item</a></td>
-				</tr>
+					<td> <a href="${contextPath}/loadpurchase?purchase=${purchaseDetail.purchase_ID}"><i class="fa fa-refresh"></i> </a></td>
+					<td><a href="${contextPath}/deletepurchase?purchase=${purchaseDetail.purchase_ID}"><i class="fa fa-trash-o"></i> </a></td>
+					</tr>
 			</c:forEach>
-            
                 </tbody>
                
 		
@@ -336,7 +340,7 @@
             <!-- /.box-body -->
             </div>
             </c:if>
-          </div>
+	    </div>
           <!-- /.box -->
         </div>
         <!-- /.col -->
@@ -345,7 +349,8 @@
     </section>
     <!-- /.content -->
  
-	<!-- jQuery 2.2.0 -->
+  
+<!-- jQuery 2.2.0 -->
 <script src="resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
@@ -374,8 +379,16 @@
     });
   });
 </script>
+</div>
 
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 </sec:authorize>
-
 </body>
 </html>

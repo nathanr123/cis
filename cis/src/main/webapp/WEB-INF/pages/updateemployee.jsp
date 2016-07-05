@@ -39,7 +39,59 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+function formSubmit() {
+	document.getElementById("logoutForm").submit();
+}
+// Removes leading whitespaces
+function LTrim( value ) {
+	
+	var re = /\s*((\S+\s*)*)/;
+	return value.replace(re, "$1");
+	
+}
 
+// Removes ending whitespaces
+function RTrim( value ) {
+	
+	var re = /((\s*\S+)*)\s*/;
+	return value.replace(re, "$1");
+	
+}
+
+// Removes leading and ending whitespaces
+function trim( value ) {
+	
+	return LTrim(RTrim(value));
+	
+}
+function doADD() 
+{
+		var empname = document.getElementById('empname');	 
+		var tempname = trim(empname.value);
+		var empnumber = document.getElementById('empnumber');	 
+		var tempnumber = trim(empnumber.value);
+	
+	if ( tempname.length > 0 && 
+			tempnumber.length > 0  ) 
+	{
+		
+			document.forms[0].submit();	
+					
+	} 
+	else if(tempname.length>0)
+		{
+			alert("Enter employee number");
+			return false;
+		}
+	else if(tempnumber.length>0)
+	{
+		alert("Enter employee name");
+		return false;
+	}
+	else{alert("Enter employee name and number Fields"); return false; }
+}
+			</script>
 <style>
 .error {
 	color: #ff0000;
@@ -63,15 +115,10 @@
 				value="${_csrf.token}" />
 </form>
 
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
 	
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -239,8 +286,9 @@
           </ul>
         </li>
         
-        
-        <li class="treeview">
+           
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -265,13 +313,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
+       
+        --%>    
+       
+
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -313,123 +364,89 @@
 <script src="resources/dist/js/demo.js"></script>
 
 
-</c:if>
+
 
 	<div align="center">
-		<form:form action="updateemployee" method="post"
+		<form:form action="updateemployee" onsubmit="return doADD();" method="post"
 			commandName="employeeForm">
 			<form:hidden path="empid" 
 							value="${employeeForm.getEmpid()}" />
 							
-												
-		<br>
-				<br>
+		<div class="login-box">
+  
+  <div class="login-box-body">
 		
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">"${employeeForm.getEmpname()}"
-							- Profile</h3>
+                 <h3 class="box-title">Update Engineer</h3>
+            
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
-              <div class="box-body">
+              
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Engineer Name:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empname" class="form-control" value="${employeeForm.getEmpname()}"/>
-                   
+                  
+ <form:input id="empname" path="empname" value="${employeeForm.getEmpname()}" placeholder="Engineer Name" class="form-control"/>                  </div>
+              
+               
+                <div class="form-group">
+                 
+<form:input id="empnumber" path="empnumber" placeholder="Engineer Number" class="form-control"/>                   
                   </div>
               
-                </div>
-                
-                
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Engineer Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empnumber" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
+               
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Age:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empage" class="form-control"/>
-                   
-                  </div>
-              
+                 
+  <form:input id="empage" path="empage" placeholder="Age" class="form-control"/>                 
                 </div>
                 
+                   <div class="form-group">
+             
+ <form:input id="empgender" path="empgender" placeholder="Gender" class="form-control"/>                  </div>
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Gender:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empgender" class="form-control"/>
-                   
-                  </div>
+             
+ <form:input id="empdob" path="empdob" placeholder="DOB" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:input id="empaddr" path="empaddr" placeholder="Address" class="form-control"/>     				</div>
+                  
+                    <div class="form-group">
+             
+ <form:input id="empcommaddr" path="empcommaddr" placeholder="Communication Address" class="form-control"/>
+                     					</div>
+               <div class="form-group">
+             
+<form:input id="empmobileno" path="empmobileno" placeholder="Mobile Number" class="form-control"/>                     					
+</div>
               
-                </div>
-                
-                   <div class="form-group">
-                  <label class="col-sm-2 control-label">DOB:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empdob" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                   <div class="form-group">
-                  <label class="col-sm-2 control-label">Address:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empaddr" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                   <div class="form-group">
-                  <label class="col-sm-2 control-label">Communication Address:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empcommaddr" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                   <div class="form-group">
-                  <label class="col-sm-2 control-label">Mobile Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="empmobileno" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-              </div>
-              <!-- /.box-body -->
               <div class="box-footer">
          
                 <button type="submit" class="btn btn-primary pull-center">Update Engineer</button>
-              </div>
-         
-          </div>
-		
-							
+				            
+	</div>
+	</div>
+	</div>
+	</div>
+	<br>
 		
 		</form:form>
 	</div>
+	</div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
 </html>

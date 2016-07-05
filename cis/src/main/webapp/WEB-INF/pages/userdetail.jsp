@@ -39,7 +39,56 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+				function formSubmit() {
+					document.getElementById("logoutForm").submit();
+				}
+				// Removes leading whitespaces
+				function LTrim( value ) {
+					
+					var re = /\s*((\S+\s*)*)/;
+					return value.replace(re, "$1");
+					
+				}
 
+				// Removes ending whitespaces
+				function RTrim( value ) {
+					
+					var re = /((\s*\S+)*)\s*/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes leading and ending whitespaces
+				function trim( value ) {
+					
+					return LTrim(RTrim(value));
+					
+				}
+				function doADD() 
+				{
+			 		var username = document.getElementById('usernames');	 
+			 		var tusername = trim(username.value);
+			 		var fullname = document.getElementById('fullname');	 
+			 		var tfullname = trim(fullname.value);
+			 		var mailid = document.getElementById('mailid');	 
+			 		var tmailid = trim(mailid.value);
+			 		var mobileno = document.getElementById('mobileno');	 
+			 		var tmobileno = trim(mobileno.value);
+			 		
+
+					if ( tusername.length > 0 && 
+							tfullname.length > 0 && 
+							tmailid.length>0 &&
+							tmobileno.length > 0 ) 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+			</script>
 <style>
 .error {
 	color: #ff0000;
@@ -64,14 +113,9 @@
 				value="${_csrf.token}" />
 </form>
 
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -240,7 +284,9 @@
         </li>
         
         
-        <li class="treeview">
+             
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -265,13 +311,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
+       
+        --%>    
+       
+
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -313,79 +362,69 @@
 <script src="resources/dist/js/demo.js"></script>
 
 
-</c:if>
+
 
 	<div align="center">
-		<form:form action="updateuserdetail" method="post"
+		<form:form action="updateuserdetail" onsubmit="return doADD();" method="post"
 			commandName="userdetailForm">
 			
-					
-		<br>
-				<br>
+			
+         	<div class="login-box">
+  
+  <div class="login-box-body">
 		
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">"${userdetailForm.getUsername()}"
+                 <h3 class="box-title">"${userdetailForm.getUsername()}"
 							- Profile</h3>
+            
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
-              <div class="box-body">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">User Name:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="username" class="form-control" value="${userdetailForm.getUsername()}"/>
-                   
-                  </div>
               
-                </div>
-                
-                
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Name:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="fullname" class="form-control"/>
-                   
-                  </div>
+                  
+<form:input id="username" placeholder="Username"  path="username" class="form-control"/>                  </div>
               
-                </div>
-                
+               
+                             <div class="form-group">
+                 
+<form:input path="fullname" id="fullname" placeholder="Name" class="form-control"/>                  </div>
+              
+               
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Mail ID:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="mailid" class="form-control"/>
-                   
-                  </div>
-              
+                 
+<form:input path="mailid" id="mailid" placeholder = "Mail ID" class="form-control"/>                 
                 </div>
                 
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Mobile No:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="mobileno" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-              </div>
+                   <div class="form-group">
+             
+   <form:input path="mobileno" id="mobileno" placeholder="Mobile Number" class="form-control"/>
+   </div>
               <!-- /.box-body -->
               <div class="box-footer">
          
                 <button type="submit" class="btn btn-primary pull-center">Update User</button>
-              </div>
-         
-          </div>
+				         
+	</div>
+	</div>
+	</div>
+	</div>
 		
 		</form:form>
 	</div>
+	</div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
 </html>

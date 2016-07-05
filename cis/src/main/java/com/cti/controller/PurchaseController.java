@@ -1,10 +1,13 @@
 package com.cti.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.stereotype.Controller;
@@ -20,9 +23,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cti.model.Client;
-import com.cti.model.Invoice;
 import com.cti.model.Purchase;
 import com.cti.model.Purchaseitemdetail;
+
 import com.cti.service.PurchaseService;
 import com.cti.service.PurchaseitemdetailService;
 
@@ -30,46 +33,50 @@ import com.cti.service.PurchaseitemdetailService;
 @EnableWebMvcSecurity
 public class PurchaseController {
 
-
 	@Autowired
 	PurchaseitemdetailService purchaseitemdetailService;
+
 	@InitBinder("purchaseitemdetailForm")
 	protected void initPurchaseitemdetailBinder(WebDataBinder binder) {
-		//binder.setValidator(userValidator);
+		// binder.setValidator(userValidator);
+	}
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	protected Session getCurrentSession() {
+		return sessionFactory.getCurrentSession();
 	}
 
 	@Autowired
 	PurchaseService purchaseService;
+
 	@InitBinder("purchaseForm")
 	protected void initPurchaseBinder(WebDataBinder binder) {
-		//binder.setValidator(userValidator);
+		// binder.setValidator(userValidator);
 	}
 
 	@RequestMapping(value = "/newpurchase", method = RequestMethod.GET)
-	public @ResponseBody ModelAndView goToNewPurchase(
-			Map<String, Object> model) {
+	public @ResponseBody ModelAndView goToNewPurchase(Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Purchase userForm = new Purchase();
+		Purchase purchaseForm = new Purchase();
 
-		model.put("purchaseForm", userForm);
+		model.put("purchaseForm", purchaseForm);
 
 		mav.setViewName("purchase");
 
 		return mav;
 	}
 
-	
-
 	@RequestMapping(value = "/createnewpurchase", method = RequestMethod.POST)
-	public ModelAndView doCreateNewPurchase(@ModelAttribute("purchaseForm") Purchase user,
-			BindingResult result, Map<String, Object> model,
-			SessionStatus status) {
+	public ModelAndView doCreateNewPurchase(@ModelAttribute("purchaseForm") Purchase purchase, BindingResult result,
+			Map<String, Object> model, SessionStatus status) {
 
 		ModelAndView mav = new ModelAndView();
 
-		//userValidator.validate(user, result);
+		// userValidator.validate(user, result);
 
 		if (result.hasErrors()) {
 
@@ -79,50 +86,54 @@ public class PurchaseController {
 		} else {
 			Date d = new Date();
 
-			user.setPurchase_number(user.getPurchase_number());
+			purchase.setPurchase_number(purchase.getPurchase_number());
 			
-			user.setPurchase_date(user.getPurchase_date());
+			purchase.setPurchase_date(purchase.getPurchase_date());
 			
-			user.setPurchase_del_date(user.getPurchase_del_date());
+			purchase.setPurchase_del_date(purchase.getPurchase_del_date());
 			
-			user.setPurchase_cust_name(user.getPurchase_cust_name());
+			purchase.setPurchase_cust_name(purchase.getPurchase_cust_name());
 			
 			String id = getLatestPurchaseId();
 			
-			user.setPurchase_ID(id);
+			purchase.setPurchase_ID(id);
 
-			user.setCreatedtime(d);
+			purchase.setCreatedtime(d);
 
-			user.setModifiedtime(d);
+			purchase.setModifiedtime(d);
 
 			
 
-			purchaseService.savePurchase(user);
+			purchaseService.savePurchase(purchase);
 
 			mav.addObject("msg"," New Purchase Created Successfully");
 
-			mav.setViewName("updatepurchase");
 
-			return mav;
+			return new ModelAndView("redirect:/loadpurchase?purchase="+purchase.getPurchase_ID());
+
 		}
 
 	}
 
 	@RequestMapping(value = "/loadpurchase", method = RequestMethod.GET)
-	public ModelAndView goPurchaseUpdate(@RequestParam("purchase") String user,
+	public ModelAndView goPurchaseUpdate(@RequestParam("purchase") String purchase,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Purchase userdetailForm = purchaseService.getPurchaseById(user);
+		Purchase purchasedetailForm = purchaseService.getPurchaseById(purchase);
 
-		if (userdetailForm == null) {
+		if (purchasedetailForm == null) {
 
-			userdetailForm = new Purchase();
+			purchasedetailForm = new Purchase();
 
 		}
+		List<Purchaseitemdetail> purchaseitemdetailForm = purchaseitemdetailService.listPurchaseitemdetail(purchase);
 
-		model.put("purchaseForm", userdetailForm);
+		model.put("purchaseitemdetaillist", purchaseitemdetailForm);
+
+		model.put("purchaseitemdetailForm", new Purchaseitemdetail());
+		model.put("purchaseForm", purchasedetailForm);
 
 		mav.setViewName("updatepurchase");
 
@@ -131,16 +142,17 @@ public class PurchaseController {
 	}
 
 	@RequestMapping(value = "/deletepurchase", method = RequestMethod.GET)
-	public ModelAndView deletePurchase(@RequestParam("purchase") String user,
+	public ModelAndView deletePurchase(@RequestParam("purchase") String pur,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		if (!purchaseService.removePurchase(user)) {
+		if (!purchaseService.removePurchase(pur)) {
 
-			mav.addObject("msg", "Unable to delete " + user + ".");
+			mav.addObject("msg", "Unable to delete " + pur + ".");
 		} else {
-			mav.addObject("msg", user + " successfully deleted.");
+			
+			mav.addObject("msg", pur + " successfully deleted.");
 		}
 		mav.addObject("purchaselist", getAllPurchase());
 
@@ -152,7 +164,7 @@ public class PurchaseController {
 
 	@RequestMapping(value = "/updatepurchase", method = RequestMethod.POST)
 	public ModelAndView updatePurchase(
-			@ModelAttribute("purchaseForm") Purchase userDetail,
+			@ModelAttribute("purchaseForm") Purchase purchaseDetail,
 			BindingResult result, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
@@ -172,11 +184,11 @@ public class PurchaseController {
 
 			Date d = new Date();
 
-			userDetail.setCreatedtime(d);
+			purchaseDetail.setCreatedtime(d);
 
-			userDetail.setModifiedtime(d);
+			purchaseDetail.setModifiedtime(d);
 
-				purchaseService.updatePurchase(userDetail);
+				purchaseService.updatePurchase(purchaseDetail);
 
 				view = "index";
 
@@ -205,26 +217,16 @@ public class PurchaseController {
 	}
 
 	public List<Purchase> getAllPurchase() {
-		List<Purchase> emps = purchaseService.listPurchase();
+		List<Purchase> pur = purchaseService.listPurchase();
 
-		return emps;
+		return pur;
 	}
 
-	private Purchase getPurchase(String username) {
-		return purchaseService.getPurchaseById(username);
+	private Purchase getPurchase(String pur) {
+		return purchaseService.getPurchaseById(pur);
 	}
 
-	@ModelAttribute("priorityLevel")
-	public Map<Integer, Integer> getPriority() {
 
-		Map<Integer, Integer> userPriorty = new HashMap<Integer, Integer>();
-
-		for (int i = 10; i > 0; i--) {
-			userPriorty.put(i, i);
-		}
-
-		return userPriorty;
-	}
 
 	private String getLatestPurchaseId() {
 		int iddigit = 0;
@@ -242,95 +244,81 @@ public class PurchaseController {
 		return str;
 
 	}
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/newpurchaseitemdetail", method = RequestMethod.GET)
-	public @ResponseBody ModelAndView goToNewPurchaseitemdetail(
-			Map<String, Object> model) {
+	public @ResponseBody ModelAndView goToNewPurchaseitemdetail(Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Purchaseitemdetail userForm = new Purchaseitemdetail();
+		Purchaseitemdetail purchaseForm = new Purchaseitemdetail();
 
-		model.put("purchaseitemdetailForm", userForm);
+		model.put("purchaseitemdetailForm", purchaseForm);
 
 		mav.setViewName("purchaseitemdetail");
 
 		return mav;
 	}
 
-	
-
 	@RequestMapping(value = "/createnewpurchaseitemdetail", method = RequestMethod.POST)
-	public ModelAndView doCreateNewPurchaseitemdetail(@ModelAttribute("purchaseitemdetailForm") Purchaseitemdetail user,
-			BindingResult result, Map<String, Object> model,
-			SessionStatus status) {
+	public ModelAndView doCreateNewPurchaseitemdetail(@ModelAttribute("purchaseitemdetailForm") Purchaseitemdetail purchaseItem,
+			BindingResult result, Map<String, Object> model, SessionStatus status)
+			throws IOException {
 
 		ModelAndView mav = new ModelAndView();
 
-		//userValidator.validate(user, result);
+		// userValidator.validate(user, result);
 
 		if (result.hasErrors()) {
 
 			mav.setViewName("purchaseitemdetail");
 
-			return mav;
+			 return mav;
 		} else {
 			Date d = new Date();
 
-			user.setPurchasenumber(user.getPurchasenumber());
+			purchaseItem.setPurchasenumber(purchaseItem.getPurchasenumber());
 			
-			user.setQty(user.getQty());
-			
-			user.setTax(user.getTax());
-			
-			user.setTaxamount(user.getTaxamount());
-			
-			user.setTotalprice(user.getTotalprice());
-			
-			user.setTotalpricetax(user.getTotalpricetax());
-			
-			user.setUnitrate(user.getUnitrate());
-			
-			String id = getLatestPurchaseitemdetailId();
-			
-			user.setProduct_ID(id);
+			purchaseItem.setProduct_ID(purchaseItem.getProduct_ID());
 
-			user.setCreatedtime(d);
+			purchaseItem.setQty(purchaseItem.getQty());
 
-			user.setModifiedtime(d);
+			purchaseItem.setTax(purchaseItem.getTax());
 
-			
+			purchaseItem.setTaxamount(purchaseItem.getTaxamount());
 
-			purchaseitemdetailService.savePurchaseitemdetail(user);
+			purchaseItem.setTotalprice(purchaseItem.getTotalprice());
 
-			mav.addObject("msg"," New Purchase Item Created Successfully");
+			purchaseItem.setTotalpricetax(purchaseItem.getTotalpricetax());
 
-			mav.setViewName("index");
+			purchaseItem.setUnitrate(purchaseItem.getUnitrate());
 
-			return mav;
+			purchaseItem.setCreatedtime(d);
+
+			purchaseItem.setModifiedtime(d);
+
+			purchaseitemdetailService.savePurchaseitemdetail(purchaseItem);
+
+				
+			return new ModelAndView("redirect:/loadpurchase?purchase="+purchaseItem.getPurchasenumber());
 		}
 
 	}
 
 	@RequestMapping(value = "/loadpurchaseitemdetail", method = RequestMethod.GET)
-	public ModelAndView goPurchaseitemdetailUpdate(@RequestParam("purchaseitemdetail") String user,
+	public ModelAndView goPurchaseitemdetailUpdate(@RequestParam("purchaseitemdetail") String purchase,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Purchaseitemdetail userdetailForm = purchaseitemdetailService.getPurchaseitemdetailById(user);
+		Purchaseitemdetail purchasedetailForm = purchaseitemdetailService.getPurchaseitemdetailById(purchase);
 
-		if (userdetailForm == null) {
+		if (purchasedetailForm == null) {
 
-			userdetailForm = new Purchaseitemdetail();
+			purchasedetailForm = new Purchaseitemdetail();
 
 		}
 
-		model.put("purchaseitemdetailForm", userdetailForm);
+		model.put("purchaseitemdetailForm", purchasedetailForm);
 
 		mav.setViewName("updatepurchaseitemdetail");
 
@@ -338,29 +326,29 @@ public class PurchaseController {
 
 	}
 
+
 	@RequestMapping(value = "/deletepurchaseitemdetail", method = RequestMethod.GET)
-	public ModelAndView deletePurchaseitemdetail(@RequestParam("purchaseitemdetail") String user,
+	public ModelAndView deletePurchaseitemdetail(@RequestParam("purchaseitemdetail") String purchase,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		if (!purchaseitemdetailService.removePurchaseitemdetail(user)) {
+		if (!purchaseitemdetailService.removePurchaseitemdetail(purchase)) {
 
-			mav.addObject("msg", "Unable to delete " + user + ".");
+			mav.addObject("msg", "Unable to delete " + purchase + ".");
 		} else {
-			mav.addObject("msg", user + " successfully deleted.");
+			mav.addObject("msg", purchase + " successfully deleted.");
 		}
 		mav.addObject("purchaseitemdetaillist", getAllPurchaseitemdetail());
 
-		mav.setViewName("listpurchaseitemdetail");
+		return new ModelAndView("redirect:/loadpurchase?purchase="+purchase);
 
-		return mav;
 
 	}
 
 	@RequestMapping(value = "/updatepurchaseitemdetail", method = RequestMethod.POST)
 	public ModelAndView updatePurchaseitemdetail(
-			@ModelAttribute("purchaseitemdetailForm") Purchaseitemdetail userDetail,
+			@ModelAttribute("purchaseitemdetailForm") Purchaseitemdetail purchaseDetail,
 			BindingResult result, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
@@ -380,22 +368,19 @@ public class PurchaseController {
 
 			Date d = new Date();
 
-			userDetail.setCreatedtime(d);
+			purchaseDetail.setCreatedtime(d);
 
-			userDetail.setModifiedtime(d);
+			purchaseDetail.setModifiedtime(d);
 
-				purchaseitemdetailService.updatePurchaseitemdetail(userDetail);
+				purchaseitemdetailService.updatePurchaseitemdetail(purchaseDetail);
 
 				view = "index";
 
 				msg = "Updated Successfully !!";
 
 		
-			mav.addObject("msg", msg);
+				return new ModelAndView("redirect:/loadpurchase?purchase="+purchaseDetail.getPurchasenumber());
 
-			mav.setViewName(view);
-
-			return mav;
 		}
 	}
 
@@ -413,13 +398,13 @@ public class PurchaseController {
 	}
 
 	public List<Purchaseitemdetail> getAllPurchaseitemdetail() {
-		List<Purchaseitemdetail> emps = purchaseitemdetailService.listPurchaseitemdetail();
+		List<Purchaseitemdetail> pur = purchaseitemdetailService.listPurchaseitemdetail();
 
-		return emps;
+		return pur;
 	}
 
-	private Purchaseitemdetail getPurchaseitemdetail(String username) {
-		return purchaseitemdetailService.getPurchaseitemdetailById(username);
+	private Purchaseitemdetail getPurchaseitemdetail(String purchasename) {
+		return purchaseitemdetailService.getPurchaseitemdetailById(purchasename);
 	}
 
 
@@ -434,7 +419,7 @@ public class PurchaseController {
 
 		iddigit++;
 
-		String str = String.format("PIT%04d", iddigit); 
+		String str = String.format("PRO%04d", iddigit); 
 
 		return str;
 
@@ -444,9 +429,9 @@ public class PurchaseController {
 	
 	@ModelAttribute("cust")
 	public List<Client> getAllCustname() {
-		List<Client> emps = purchaseService.getCust();
+		List<Client> client = purchaseService.getCust();
 
-		return emps;
+		return client;
 	}
 	
 	

@@ -50,6 +50,131 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+				function formSubmit() {
+					document.getElementById("logoutForm").submit();
+				}
+				// Removes leading whitespaces
+				function LTrim( value ) {
+					
+					var re = /\s*((\S+\s*)*)/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes ending whitespaces
+				function RTrim( value ) {
+					
+					var re = /((\s*\S+)*)\s*/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes leading and ending whitespaces
+				function trim( value ) {
+					
+					return LTrim(RTrim(value));
+					
+				}
+				function doADD() 
+				{
+					var invoicenumber = document.getElementById('invoicenumber');	 
+			 		var tinvoicenumber = trim(invoicenumber.value);
+			 		
+			 		var qty1 = document.getElementById('qty1');	 
+			 		var tqty1 = trim(qty1.value);
+			 		var qty2 = document.getElementById('qty2');	 
+			 		var tqty2 = trim(qty2.value);
+			 		var unitrate = document.getElementById('unitrate');	 
+			 		var tunitrate = trim(unitrate.value);
+			 		var tax = document.getElementById('tax');	 
+			 		var ttax = trim(tax.value);
+			 		var taxamount = document.getElementById('taxamount');	 
+			 		var ttaxamount = trim(taxamount.value);
+			 		var totalprice = document.getElementById('totalprice');	 
+			 		var ttotalprice = trim(totalprice.value);
+			 		var totalpricetax = document.getElementById('totalpricetax');	 
+			 		var ttotalpricetax = trim(totalpricetax.value);
+			 		var serialnumber = document.getElementById('serialnumber');	 
+			 		var tserialnumber = trim(tax.value);
+					
+
+					if ( tinvoicenumber.length > 0 && 
+							
+							tqty1.length > 0 && 
+							tqty2.length>0 &&
+							tunitrate.length >0&& 
+							ttax.length >0 && 
+							ttaxamount.length > 0 && 
+							ttotalprice.length >0 &&
+							ttotalpricetax.length>0 &&
+							tserailnumber.length >0) 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+				function doADD1() 
+				{
+			 		var invoicenumber = document.getElementById('invoicenumber');	 
+			 		var tinvoicenumber = trim(invoicenumber.value);
+			 		var invoicedate = document.getElementById('invoicedate');	 
+			 		var tinvoicedate = trim(invoicedate.value);
+			 		var warrantydate = document.getElementById('warrantydate');	 
+			 		var twarrantydate = trim(warrantydate.value);
+			 		var warrantyterm = document.getElementById('warrantyterm');	 
+			 		var twarrantyterm = trim(warrantyterm.value);
+			 		var expirydate = document.getElementById('expirydate');	 
+			 		var texpirydate = trim(expirydate.value);
+			 		var customername = document.getElementById('customername');	 
+			 		var tcustomername = trim(customername.value);
+			 		var delchalnum = document.getElementById('delchalnum');	 
+			 		var tdelchalnum = trim(delchalnum.value);
+			 		var ponum = document.getElementById('ponum');	 
+			 		var tponum = trim(ponum.value);
+					
+
+					if ( tinvoicenumber.length > 0 && 
+							tinvoicedate.length > 0 && 
+							twarrantydate.length>0 &&
+							twarrantyterm.length >0&& 
+							texpirydate.length !='0' && 
+							tcustomername.length > 0 && 
+							tdelchalnum.length >0 &&
+							tponum.length!='0') 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+				function setValue(invoicenumber,qty,unitrate,tax,taxamount,totalprice,totalpricetax,serialnumber)
+				{	
+					var a = [invoicenumber,qty,unitrate,tax,taxamount,totalprice,totalpricetax,serialnumber];
+					document.getElementById("radio").value=a;
+					document.getElementById("invoiceno").value = a[0];
+					document.getElementById("qtys1").value = a[1];
+					document.getElementById("qtys2").value = a[1];
+					document.getElementById("unitrates").value = a[2];
+					document.getElementById("taxs").value = a[3];
+					document.getElementById("taxamounts").value = a[4];
+					document.getElementById("totalprices").value = a[5];
+					document.getElementById("totalpricetaxs").value = a[6];
+					document.getElementById("serialnumbers").value = a[7];
+
+		
+				}
+				function deleteitem()
+				{
+					var p = document.getElementById("invoiceid").value;
+					window.location.replace("deleteinvoiceitemdetail?invoiceitemdetail="+ p);
+				}
+
+				
+			</script>
 
 <style>
 .error {
@@ -67,22 +192,18 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-<!-- For login user -->
+		<!-- For login user -->
 		<c:url value="/logout" var="logoutUrl" />
 		<form action="${logoutUrl}" method="post" id="logoutForm">
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-</form>
+		</form>
 
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
+		
 
 
-		<c:if test="${pageContext.request.userPrincipal.name != null}">
 			<div class="wrapper">
+		<c:if test="${pageContext.request.userPrincipal.name != null}">
 
 				<header class="main-header"> <!-- Logo --> <a
 					href="${contextPath}" class="logo"> <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -218,36 +339,41 @@
 						</ul></li>
 
 
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-briefcase"></i> <span>Jobs</span> <i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
-						<ul class="treeview-menu">
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>
-									List Jobs</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>
-									New Job</a></li>
-						</ul></li>
+					      
+    <%--
+      <li class="treeview">
+          <a href="#">
+            <i class="fa fa-briefcase"></i>
+            <span>Jobs</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> List Jobs</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>  New Job</a></li>
+          </ul>
+        </li>
 
-					<li class="treeview"><a href="#"> <i
-							class="fa fa-file-text-o"></i> <span>Reports</span> <i
-							class="fa fa-angle-left pull-right"></i>
-					</a>
-						<ul class="treeview-menu">
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Item
-									Based</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Invoice
-									Based</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Job
-									Based</a></li>
-							<li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant
-									Based</a></li>
-						</ul></li>
+	  <li class="treeview">
+          <a href="#">
+            <i class="fa fa-file-text-o"></i>
+            <span>Reports</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Item Based</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Invoice Based</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Job Based</a></li>
+            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
+          </ul>
+        </li>
+       
+        --%>    
+       
 
 				</ul>
 
 				</section> <!-- /.sidebar --> </aside>
-
+	</c:if>
 				<!-- Content Wrapper. Contains page content -->
 				<div class="content-wrapper">
 					<!-- Content Header (Page header) -->
@@ -287,184 +413,185 @@
 					<script src="resources/dist/js/pages/dashboard2.js"></script>
 					<!-- AdminLTE for demo purposes -->
 					<script src="resources/dist/js/demo.js"></script>
-		</c:if>
+	
 		<div align="center">
-			<form:form action="updateinvoice" method="post"
+			<form:form action="updateinvoice" onsubmit="return doADD1();" method="post"
 				commandName="invoiceForm">
-				<form:hidden path="invoice_ID"
+				<form:hidden path="invoice_ID" id="invoiceid"
 					value="${invoiceForm.getInvoice_ID()}" />
-				<br>
-				<br>
-				<div class="box box-primary">
-					<div class="box-header with-border">
-						<h3 class="box-title">Update Invoice</h3>
+				<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                 <h3 class="box-title">Update Invoice</h3>
+            
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            
+              
+                <div class="form-group">
+                  
+  <form:input id="invoicenumber" path="invoice_number" value="${invoiceForm.getInvoice_number()}" placeholder="Invoice Number" class="form-control"  />                  </div>
+              
+               
+                <div class="form-group">
+                 
+ <form:input id="invoicedate"  path="invoice_date" placeholder="Invoice Date" class="form-control"/>                   
+                  </div>
+              
+               
+                
+                 <div class="form-group">
+                 
+ <form:input id="warrantydate" path="warrenty_date" placeholder="Warranty Date" class="form-control"/>                 
+                </div>
+                
+                   <div class="form-group">
+             
+ <form:input id="warrantyterm" path="warrenty_term" placeholder="Warranty Term" class="form-control"/>                  </div>
+                
+                 <div class="form-group">
+             
+ <form:input id="expirydate" path="expairy_date" placeholder="Expiry Date" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:select id="customername" path="custname"  class = "form-control">
+							<form:option value="0" label="Customer Name" />
+							<c:forEach items="${cust}" var="clientDetail">
+							
+							<form:option value="${clientDetail.client_ID}" label='${clientDetail.clientname}'/>
+							
+							</c:forEach>
+						</form:select>
+                    				</div>
+                  
+                    <div class="form-group">
+             
+  <form:input id="delchalnum" path="del_chalan_number" placeholder="Delivery Chalan Number" class="form-control"/>
+                     					</div>
+              
+                 <div class="form-group">
+             
+  <form:select id="ponum" path="po_number" class = "form-control">
+							<form:option value="0" label="Purchase Order Number" />
+							<c:forEach items="${pur}" var="purchaseDetail">
+							
+							<form:option value="${purchaseDetail.purchase_ID}" label='${purchaseDetail.purchase_number}'/>
+							
+							</c:forEach>
+						</form:select>                     					</div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+         
+                <button type="submit" class="btn btn-primary pull-center">Update Invoice</button>
+	</div>
+	</div>
+	</div>
+	</div>
+				</form:form>
+			<div align=center>
+
+				<section class="content">
+				<div class="row">
+
+					<div class="col-xs-12">
+
+						<div class="box">
+							<div class="box-header">
+								<h3>Invoice Item List</h3>
+								<c:if test="${!empty invoiceitemdetaillist}">
+
+
+									<div class="box-body no-padding">
+
+										<!-- /.box-header -->
+										<div class="box-body">
+											<table id="example1"
+												class="table table-bordered table-striped">
+												<thead>
+													<tr>
+													<th></th>
+														<th>S.No</th>
+														<th>Invoice Number</th>
+														<th>Quantity</th>
+														<th>Unit Rate</th>
+														<th>Tax</th>
+														<th>Tax Amount</th>
+														<th>Total Price</th>
+														<th>Total Price (with tax)</th>
+														<th>Serial Number</th>
+
+
+													</tr>
+												</thead>
+												<tbody>
+
+													<c:set var="sno" value="0" />
+													<c:forEach items="${invoiceitemdetaillist}"
+														var="invoiceitemdetailDetail">
+														
+                      
+                          
+                       
+														
+														<tr>
+													<td>	<input type="radio" id="radio" name="radio" onclick="setValue('${invoiceitemdetailDetail.invoicenumber}','${invoiceitemdetailDetail.qty}','${invoiceitemdetailDetail.unitrate}','${invoiceitemdetailDetail.tax}', '${invoiceitemdetailDetail.taxamount}', '${invoiceitemdetailDetail.totalprice}', '${invoiceitemdetailDetail.totalpricetax}', '${invoiceitemdetailDetail.serialnumber}');" ></td>
+															<td><c:set var="sno" value="${sno+1 }" /> <c:out
+																	value="${sno }" /></td>
+															<td>${invoiceitemdetailDetail.invoicenumber}</td>
+															<td>${invoiceitemdetailDetail.qty}</td>
+															<td>${invoiceitemdetailDetail.unitrate}</td>
+															<td>${invoiceitemdetailDetail.tax}</td>
+															<td>${invoiceitemdetailDetail.taxamount}</td>
+															<td>${invoiceitemdetailDetail.totalprice}</td>
+															<td>${invoiceitemdetailDetail.totalpricetax}</td>
+															<td>${invoiceitemdetailDetail.serialnumber}</td>
+													</c:forEach>
+
+
+
+												</tbody>
+
+
+
+											</table>
+										</div>
+										<!-- /.box-body -->
+									</div>
+								</c:if>
+							</div>
+							<!-- /.box -->
+						</div>
+						<!-- /.col -->
 					</div>
-					<!-- /.box-header -->
-					<!-- form start -->
-
-					<div class="box-body">
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Invoice Number:</label>
-
-							<div class="col-sm-10">
-								<form:input path="invoice_number" class="form-control"
-									value="${invoiceForm.getInvoice_number()}" />
-
-							</div>
-
-						</div>
 
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Invoice Date:</label>
+			
 
-							<div class="col-sm-10">
-								<form:input path="invoice_date" class="form-control" />
-
-
-							</div>
-
-						</div>
-
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Warranty Date:</label>
-
-							<div class="col-sm-10">
-								<form:input path="warrenty_date" class="form-control" />
-
-							</div>
-
-						</div>
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Warranty Term:</label>
-
-							<div class="col-sm-10">
-								<form:input path="warrenty_term" class="form-control" />
-
-							</div>
-
-						</div>
-
-
-
-
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Expiry Date:</label>
-
-							<div class="col-sm-10">
-								<form:input path="expairy_date" class="form-control" />
-
-							</div>
-
-						</div>
-
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Customer Name:</label>
-
-							<div class="col-sm-10">
-								<form:select path="custname" class="form-control">
-									<form:option value="0" label="--- Select ---" />
-									<c:forEach items="${cust}" var="clientDetail">
-
-										<form:option value="${clientDetail.client_ID}"
-											label='${clientDetail.clientname}' />
-
-									</c:forEach>
-								</form:select>
-
-							</div>
-
-						</div>
-
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Delivery Chalan
-								Number:</label>
-
-							<div class="col-sm-10">
-								<form:input path="del_chalan_number" class="form-control" />
-
-							</div>
-
-						</div>
-
-						<div class="form-group">
-							<label class="col-sm-2 control-label">Purchase Order
-								Number:</label>
-
-							<div class="col-sm-10">
-								<form:select path="po_number" class="form-control">
-									<form:option value="0" label="--- Select ---" />
-									<c:forEach items="${pur}" var="purchaseDetail">
-
-										<form:option value="${purchaseDetail.purchase_ID}"
-											label='${purchaseDetail.purchase_number}' />
-
-									</c:forEach>
-								</form:select>
-
-							</div>
-
-						</div>
-
-					</div>
-					<!-- /.box-body -->
-					<div class="box-footer">
-
-						<button type="submit" class="btn btn-primary pull-center">Update
-							Invoice</button>
-					</div>
-
-				</div>
-
-				<div align=center>
-
-					<div class="box-footer">
-
-						<button type="button" class="btn btn-primary pull-center"
-							data-toggle="modal" data-target="#myModal1">Add Invoice
-							Item</button>
-						<button type="button" class="btn btn-primary pull-center" 
-						data-toggle="modal" data-target="#myModal2">Modify
-							Invoice Item</button>
-						<button type="button" class="btn btn-primary pull-center"
+					<button type="button" class="btn btn-primary pull-center"
+						data-toggle="modal" data-target="#myModal1">Add Invoice
+						Item</button>
+					<button type="button"  class="btn btn-primary pull-center"
+						data-toggle="modal"  data-target="#myModal2">Modify
+						Invoice Item</button>
+					<button type="button" class="btn btn-primary pull-center"
 						data-toggle="modal" data-target="#myModal3">Delete
-							Invoice Item</button>
+						Invoice Item</button>
 
-
-						<!-- Modal -->
-						<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
-							aria-labelledby="myModalLabel">
-							<div class="modal-dialog" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal"
-											aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-										<h4 class="modal-title" id="myModalLabel">New Invoice
-											Item</h4>
-									</div>
-									<div class="modal-body">...</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-default"
-											data-dismiss="modal">Close</button>
-										<button type="button" class="btn btn-primary">Save
-											changes</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
 
 
 				</div>
-				<!-- Modal -->
-				<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+				<!-- /.row --> </section>
+
+				<!-- /.content -->
+
+				<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
 					aria-labelledby="myModalLabel">
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
@@ -473,50 +600,197 @@
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<h4 class="modal-title" id="myModalLabel">Modify Invoice
-									Item</h4>
 							</div>
-							<div class="modal-body">...</div>
-							<div class="modal-footer">
+							<div class="modal-body">
+								<form:form action="createnewinvoiceitemdetail" onsubmit="return doADD();" method="post"
+									commandName="invoiceitemdetailForm">
+									<form:hidden path="product_ID" value ="" />
+											<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                 <h3 class="box-title">New Invoice Item</h3>
+            
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            
+              
+                <div class="form-group">
+                  
+ <form:input path="invoicenumber" id="invoicenumber" placeholder="Invoice Number" class="form-control" />                  </div>
+              
+               
+                <div class="form-group">
+              
+ <form:input path="qty" id="qty1" placeholder="Quantity" class="form-control"/>
+                  <form:input path="qty" id="qty2" placeholder="Unit" class="form-control"/>                   
+                  </div>
+              
+             
+                
+                 <div class="form-group">
+                 
+ <form:input path="unitrate" id="unitrate" placeholder="Unitrate" class="form-control"/>                 
+                </div>
+                
+                   <div class="form-group">
+             
+ <form:input path="tax" id="tax" placeholder="Tax" class="form-control"/>                  </div>
+                
+                 <div class="form-group">
+             
+  <form:input path="taxamount" id="taxamount" placeholder="Tax Amount" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalprice" id="totalprice" placeholder="Total Price" class="form-control"/>     				</div>
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalpricetax" id="totalpricetax" placeholder="Total Price (With tax)" class="form-control"/>  					</div>
+              
+               <div class="form-group">
+             
+  <form:input path="serialnumber" id="serialnumber" placeholder="Serial Number" class="form-control"/>              
+              
+      
+	</div>
+	</div>
+	</div>
+	
+	</div>
+								<div class="modal-footer">
 								<button type="button" class="btn btn-default"
 									data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save
+								<button type="submit" class="btn btn-primary">Save
 									changes</button>
+									<button type="reset" class="btn btn-primary">Reset</button>
 							</div>
+							</form:form>
 						</div>
 					</div>
 				</div>
-
-				<!-- Modal -->
-				<div class="modal fade" id="myModal3" tabindex="-1" role="dialog"
-					aria-labelledby="myModalLabel">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-								<h4 class="modal-title" id="myModalLabel">Delete Invoice
-									Item</h4>
-							</div>
-							<div class="modal-body">...</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save
-									changes</button>
-							</div>
-						</div>
-					</div>
-
-
-				</div>
-
-			</form:form>
+				
+			</div>
 		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					
+					<div class="modal-body">
+		 
+		<form:form action="updateinvoiceitemdetail" id="updateinvoiceitemdetail" method="post"
+			commandName="invoiceitemdetailForm">
+							
+			<form:hidden path="product_ID" 
+							value="${invoiceitemdetailForm.getProduct_ID()}" />
+					
+		<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                         <h3 class="box-title">Update Invoice Item</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            
+              <div class="box-body">
+               <div class="form-group">
+                 <form:input id="invoiceno" path="invoicenumber" placeholder="Invoice Number" class="form-control" />
+                 
+              
+                </div>
+                
+                
+                  <div class="form-group">
+              
+ <form:input path="qty" id="qtys1" placeholder="Quantity" class="form-control"/>
+                  <form:input path="qty" id="qtys2" placeholder="Unit" class="form-control"/>                   
+                  </div>
+              
+             
+                
+                 <div class="form-group">
+                 
+ <form:input path="unitrate" id="unitrates" placeholder="Unitrate" class="form-control"/>                 
+                </div>
+                
+                   <div class="form-group">
+             
+ <form:input path="tax" id="taxs" placeholder="Tax" class="form-control"/>                  </div>
+                
+                 <div class="form-group">
+             
+  <form:input path="taxamount" id="taxamounts" placeholder="Tax Amount" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalprice" id="totalprices" placeholder="Total Price" class="form-control"/>     				</div>
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalpricetax" id="totalpricetaxs" placeholder="Total Price (With tax)" class="form-control"/>  					</div>
+              
+               <div class="form-group">
+             
+  <form:input path="serialnumber" id="serialnumbers" placeholder="Serial Number" class="form-control"/>              
+              
+      
+	</div>
+	</div>
+	</div>
+	</div>
+	</div>			
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save
+									changes</button>
+					</div>
+					</form:form>
+				</div>
+			</div>
+		</div>
+</div>
+			<!-- Modal -->
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				
+					
+					<div class="modal-body">Do you really want to delete the invoice item?
+					 </div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="submit" onclick="deleteitem();" class="btn btn-primary">Delete</button>
+					</div>
+				</div>
+			</div>
 
+		</div>
+					</div>
+					</div>
+					
 
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
 </html>

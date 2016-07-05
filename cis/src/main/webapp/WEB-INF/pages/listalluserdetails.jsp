@@ -55,8 +55,8 @@
 				}
 			</script>
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -223,9 +223,9 @@
             <li><a href="${contextPath}/newuser"><i class="fa fa-circle-o text-aqua"></i>  New User</a></li>
           </ul>
         </li>
-        
-        
-        <li class="treeview">
+           
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -250,13 +250,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
+       
+        --%>    
+       
+
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -274,7 +277,7 @@
     </section>
 
    
-</c:if>
+
 
 	<br>
 <br>
@@ -392,6 +395,16 @@
     });
   });
 </script>
+</div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 </sec:authorize>
 </body>
 </html>

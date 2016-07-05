@@ -1,10 +1,15 @@
 package com.cti.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.catalina.connector.Request;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,61 +33,54 @@ import com.cti.model.Purchase;
 import com.cti.service.InvoiceService;
 import com.cti.service.InvoiceitemdetailService;
 
-
-
 @Controller
 @EnableWebMvcSecurity
 public class InvoiceController {
 
 	@Autowired
 	InvoiceitemdetailService invoiceitemdetailService;
+
 	@InitBinder("invoiceitemdetailForm")
 	protected void initInvoiceitemdetailBinder(WebDataBinder binder) {
-		//binder.setValidator(userValidator);
+		// binder.setValidator(userValidator);
 	}
-	
-	
+
 	@Autowired
 	private SessionFactory sessionFactory;
-
 
 	protected Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
 
-
 	@Autowired
 	InvoiceService InvoiceService;
+
 	@InitBinder("invoiceForm")
 	protected void initInvoiceBinder(WebDataBinder binder) {
-		//binder.setValidator(userValidator);
+		// binder.setValidator(userValidator);
 	}
 
 	@RequestMapping(value = "/newinvoice", method = RequestMethod.GET)
-	public @ResponseBody ModelAndView goToNewInvoice(
-			Map<String, Object> model) {
+	public @ResponseBody ModelAndView goToNewInvoice(Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Invoice userForm = new Invoice();
+		Invoice invoiceForm = new Invoice();
 
-		model.put("invoiceForm", userForm);
+		model.put("invoiceForm", invoiceForm);
 
 		mav.setViewName("invoice");
 
 		return mav;
 	}
 
-	
-
 	@RequestMapping(value = "/createnewinvoice", method = RequestMethod.POST)
-	public ModelAndView doCreateNewInvoice(@ModelAttribute("invoiceForm") Invoice user,
-			BindingResult result, Map<String, Object> model,
-			SessionStatus status) {
+	public ModelAndView doCreateNewInvoice(@ModelAttribute("invoiceForm") Invoice invoice, BindingResult result,
+			Map<String, Object> model, SessionStatus status) {
 
 		ModelAndView mav = new ModelAndView();
 
-		//userValidator.validate(user, result);
+		// userValidator.validate(user, result);
 
 		if (result.hasErrors()) {
 
@@ -92,62 +90,59 @@ public class InvoiceController {
 		} else {
 			Date d = new Date();
 
-			user.setCustname(user.getCustname());
-			
-			user.setDel_chalan_number(user.getDel_chalan_number());
-			
-			user.setExpairy_date(user.getExpairy_date());
-			
-			user.setInvoice_date(user.getInvoice_date());
-			
-			user.setInvoice_number(user.getInvoice_number());
-			
-			user.setPo_number(user.getPo_number());
-			
-			user.setWarrenty_date(user.getWarrenty_date());
-			
-			user.setWarrenty_term(user.getWarrenty_term());
-			
+			invoice.setCustname(invoice.getCustname());
+
+			invoice.setDel_chalan_number(invoice.getDel_chalan_number());
+
+			invoice.setExpairy_date(invoice.getExpairy_date());
+
+			invoice.setInvoice_date(invoice.getInvoice_date());
+
+			invoice.setInvoice_number(invoice.getInvoice_number());
+
+			invoice.setPo_number(invoice.getPo_number());
+
+			invoice.setWarrenty_date(invoice.getWarrenty_date());
+
+			invoice.setWarrenty_term(invoice.getWarrenty_term());
+
 			String id = getLatestInvoiceId();
-			
-			user.setInvoice_ID(id);
 
-			user.setCreatedtime(d);
+			invoice.setInvoice_ID(id);
 
-			user.setModifiedtime(d);
+			invoice.setCreatedtime(d);
 
-			
+			invoice.setModifiedtime(d);
 
-			InvoiceService.saveInvoice(user);
+			InvoiceService.saveInvoice(invoice);
 
-			mav.addObject("msg"," New Invoice Created Successfully");
+			mav.addObject("msg", " New Invoice Created Successfully");
 
-			mav.setViewName("updateinvoice");
+			return new ModelAndView("redirect:/loadinvoice?invoice="+invoice.getInvoice_ID());
 
-			return mav;
 		}
 
 	}
 
 	@RequestMapping(value = "/loadinvoice", method = RequestMethod.GET)
-	public ModelAndView goInvoiceUpdate(@RequestParam("invoice") String user,
-			Map<String, Object> model) {
+	public ModelAndView goInvoiceUpdate(@RequestParam("invoice") String invoice, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Invoice userdetailForm = InvoiceService.getInvoiceById(user);
+		Invoice invoiceForm = InvoiceService.getInvoiceById(invoice);
 
-		if (userdetailForm == null) {
+		if (invoiceForm == null) {
 
-			userdetailForm = new Invoice();
+			invoiceForm = new Invoice();
 
 		}
-		Invoiceitemdetail userForm = new Invoiceitemdetail();
+		List<Invoiceitemdetail> invoiceitemdetailForm = invoiceitemdetailService.listInvoiceitemdetail(invoice);// getInvoiceitemdetailById(user);
 
-		model.put("invoiceitemdetailForm", userForm);
+		model.put("invoiceitemdetaillist", invoiceitemdetailForm);
 
-		
-		model.put("invoiceForm", userdetailForm);
+		model.put("invoiceitemdetailForm", new Invoiceitemdetail());
+
+		model.put("invoiceForm", invoiceForm);
 
 		mav.setViewName("updateinvoice");
 
@@ -156,16 +151,15 @@ public class InvoiceController {
 	}
 
 	@RequestMapping(value = "/deleteinvoice", method = RequestMethod.GET)
-	public ModelAndView deleteInvoice(@RequestParam("invoice") String user,
-			Map<String, Object> model) {
+	public ModelAndView deleteInvoice(@RequestParam("invoice") String invoice, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		if (!InvoiceService.removeInvoice(user)) {
+		if (!InvoiceService.removeInvoice(invoice)) {
 
-			mav.addObject("msg", "Unable to delete " + user + ".");
+			mav.addObject("msg", "Unable to delete " + invoice + ".");
 		} else {
-			mav.addObject("msg", user + " successfully deleted.");
+			mav.addObject("msg", invoice + " successfully deleted.");
 		}
 		mav.addObject("invoicelist", getAllInvoice());
 
@@ -176,13 +170,12 @@ public class InvoiceController {
 	}
 
 	@RequestMapping(value = "/updateinvoice", method = RequestMethod.POST)
-	public ModelAndView updateInvoice(
-			@ModelAttribute("invoiceForm") Invoice userDetail,
-			BindingResult result, Map<String, Object> model) {
+	public ModelAndView updateInvoice(@ModelAttribute("invoiceForm") Invoice invoice, BindingResult result,
+			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-	//	userDetailValidator.validate(userDetail, result);
+		// userDetailValidator.validate(userDetail, result);
 
 		if (result.hasErrors()) {
 
@@ -197,17 +190,16 @@ public class InvoiceController {
 
 			Date d = new Date();
 
-			userDetail.setCreatedtime(d);
+			invoice.setCreatedtime(d);
 
-			userDetail.setModifiedtime(d);
+			invoice.setModifiedtime(d);
 
-				InvoiceService.updateInvoice(userDetail);
+			InvoiceService.updateInvoice(invoice);
 
-				view = "index";
+			view = "index";
 
-				msg = "Updated Successfully !!";
+			msg = "Updated Successfully !!";
 
-		
 			mav.addObject("msg", msg);
 
 			mav.setViewName(view);
@@ -230,13 +222,13 @@ public class InvoiceController {
 	}
 
 	public List<Invoice> getAllInvoice() {
-		List<Invoice> emps = InvoiceService.listInvoice();
+		List<Invoice> invoice = InvoiceService.listInvoice();
 
-		return emps;
+		return invoice;
 	}
 
-	private Invoice getInvoice(String username) {
-		return InvoiceService.getInvoiceById(username);
+	private Invoice getInvoice(String invoice) {
+		return InvoiceService.getInvoiceById(invoice);
 	}
 
 	@ModelAttribute("priorityLevel")
@@ -261,100 +253,88 @@ public class InvoiceController {
 
 		iddigit++;
 
-		String str = String.format("INV%04d", iddigit); 
+		String str = String.format("INV%04d", iddigit);
 
 		return str;
 	}
-	
-	
-	
-	
+
 	@RequestMapping(value = "/newinvoiceitemdetail", method = RequestMethod.GET)
-	public @ResponseBody ModelAndView goToNewInvoiceitemdetail(
-			Map<String, Object> model) {
+	public @ResponseBody ModelAndView goToNewInvoiceitemdetail(Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Invoiceitemdetail userForm = new Invoiceitemdetail();
+		Invoiceitemdetail invoiceitemForm = new Invoiceitemdetail();
 
-		model.put("invoiceitemdetailForm", userForm);
+		model.put("invoiceitemdetailForm", invoiceitemForm);
 
 		mav.setViewName("invoiceitemdetail");
 
 		return mav;
 	}
 
-	
-
 	@RequestMapping(value = "/createnewinvoiceitemdetail", method = RequestMethod.POST)
-	public ModelAndView doCreateNewInvoiceitemdetail(@ModelAttribute("invoiceitemdetailForm") Invoiceitemdetail user,
-			BindingResult result, Map<String, Object> model,
-			SessionStatus status) {
+	public ModelAndView doCreateNewInvoiceitemdetail(@ModelAttribute("invoiceitemdetailForm") Invoiceitemdetail invoiceItem,
+			BindingResult result, Map<String, Object> model, SessionStatus status)
+			throws IOException {
 
 		ModelAndView mav = new ModelAndView();
 
-		//userValidator.validate(user, result);
+		// userValidator.validate(user, result);
 
 		if (result.hasErrors()) {
 
 			mav.setViewName("invoiceitemdetail");
 
-			return mav;
+			 return mav;
 		} else {
 			Date d = new Date();
 
-			user.setInvoicenumber(user.getInvoicenumber());
+			invoiceItem.setInvoicenumber(invoiceItem.getInvoicenumber());
 			
-			user.setQty(user.getQty());
-			
-			user.setTax(user.getTax());
-			
-			user.setSerialnumber(user.getSerialnumber());
-			
-			user.setTaxamount(user.getTaxamount());
-			
-			user.setTotalprice(user.getTotalprice());
-			
-			user.setTotalpricetax(user.getTotalpricetax());
-			
-			user.setUnitrate(user.getUnitrate());
-			
-			String id = getLatestInvoiceitemdetailId();
-			
-			user.setProduct_ID(id);
+			invoiceItem.setProduct_ID(invoiceItem.getProduct_ID());
 
-			user.setCreatedtime(d);
+			invoiceItem.setQty(invoiceItem.getQty());
 
-			user.setModifiedtime(d);
+			invoiceItem.setTax(invoiceItem.getTax());
 
-			
+			invoiceItem.setSerialnumber(invoiceItem.getSerialnumber());
 
-			invoiceitemdetailService.saveInvoiceitemdetail(user);
+			invoiceItem.setTaxamount(invoiceItem.getTaxamount());
 
-			mav.addObject("msg"," New Invoice Item Created Successfully");
+			invoiceItem.setTotalprice(invoiceItem.getTotalprice());
 
-			mav.setViewName("index");
+			invoiceItem.setTotalpricetax(invoiceItem.getTotalpricetax());
 
-			return mav;
+			invoiceItem.setUnitrate(invoiceItem.getUnitrate());
+
+			invoiceItem.setCreatedtime(d);
+
+			invoiceItem.setModifiedtime(d);
+
+			invoiceitemdetailService.saveInvoiceitemdetail(invoiceItem);
+
+				
+			return new ModelAndView("redirect:/loadinvoice?invoice="+invoiceItem.getInvoicenumber());
 		}
 
 	}
 
 	@RequestMapping(value = "/loadinvoiceitemdetail", method = RequestMethod.GET)
-	public ModelAndView goInvoiceitemdetailUpdate(@RequestParam("invoiceitemdetail") String user,
+	public ModelAndView goInvoiceitemdetailUpdate(@RequestParam("invoiceitemdetail") String invoiceitem,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
+		
 
-		Invoiceitemdetail userdetailForm = invoiceitemdetailService.getInvoiceitemdetailById(user);
+		Invoiceitemdetail invoiceitemForm = invoiceitemdetailService.getInvoiceitemdetailById(invoiceitem);
 
-		if (userdetailForm == null) {
+		if (invoiceitemForm == null) {
 
-			userdetailForm = new Invoiceitemdetail();
+			invoiceitemForm = new Invoiceitemdetail();
 
 		}
 
-		model.put("invoiceitemdetailForm", userdetailForm);
+		model.put("invoiceitemdetailForm", invoiceitemForm);
 
 		mav.setViewName("updateinvoiceitemdetail");
 
@@ -363,33 +343,31 @@ public class InvoiceController {
 	}
 
 	@RequestMapping(value = "/deleteinvoiceitemdetail", method = RequestMethod.GET)
-	public ModelAndView deleteInvoiceitemdetail(@RequestParam("invoiceitemdetail") String user,
+	public ModelAndView deleteInvoiceitemdetail(@RequestParam("invoiceitemdetail") String invoiceitem,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		if (!invoiceitemdetailService.removeInvoiceitemdetail(user)) {
+		if (!invoiceitemdetailService.removeInvoiceitemdetail(invoiceitem)) {
 
-			mav.addObject("msg", "Unable to delete " + user + ".");
+			mav.addObject("msg", "Unable to delete " + invoiceitem + ".");
 		} else {
-			mav.addObject("msg", user + " successfully deleted.");
+			mav.addObject("msg", invoiceitem + " successfully deleted.");
 		}
 		mav.addObject("invoiceitemdetaillist", getAllInvoiceitemdetail());
 
-		mav.setViewName("listinvoiceitemdetail");
+		return new ModelAndView("redirect:/loadinvoice?invoice="+invoiceitem);
 
-		return mav;
 
 	}
 
 	@RequestMapping(value = "/updateinvoiceitemdetail", method = RequestMethod.POST)
-	public ModelAndView updateInvoiceitemdetail(
-			@ModelAttribute("invoiceitemdetailForm") Invoiceitemdetail userDetail,
+	public ModelAndView updateInvoiceitemdetail(@ModelAttribute("invoiceitemdetailForm") Invoiceitemdetail invoiceitem,
 			BindingResult result, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-	//	userDetailValidator.validate(userDetail, result);
+		// userDetailValidator.validate(userDetail, result);
 
 		if (result.hasErrors()) {
 
@@ -404,22 +382,17 @@ public class InvoiceController {
 
 			Date d = new Date();
 
-			userDetail.setCreatedtime(d);
+			invoiceitem.setCreatedtime(d);
 
-			userDetail.setModifiedtime(d);
+			invoiceitem.setModifiedtime(d);
 
-			invoiceitemdetailService.updateInvoiceitemdetail(userDetail);
+			invoiceitemdetailService.updateInvoiceitemdetail(invoiceitem);
 
-				view = "index";
+			view = "index";
 
-				msg = "Updated Successfully !!";
+			msg = "Updated Successfully !!";
 
-		
-			mav.addObject("msg", msg);
-
-			mav.setViewName(view);
-
-			return mav;
+			return new ModelAndView("redirect:/loadinvoice?invoice="+invoiceitem.getInvoicenumber());
 		}
 	}
 
@@ -437,16 +410,14 @@ public class InvoiceController {
 	}
 
 	public List<Invoiceitemdetail> getAllInvoiceitemdetail() {
-		List<Invoiceitemdetail> emps = invoiceitemdetailService.listInvoiceitemdetail();
+		List<Invoiceitemdetail> invoiceitem = invoiceitemdetailService.listInvoiceitemdetail();
 
-		return emps;
+		return invoiceitem;
 	}
 
-	private Invoiceitemdetail getInvoiceitemdetail(String username) {
-		return invoiceitemdetailService.getInvoiceitemdetailById(username);
+	private Invoiceitemdetail getInvoiceitemdetail(String invoiceitem) {
+		return invoiceitemdetailService.getInvoiceitemdetailById(invoiceitem);
 	}
-
-
 
 	private String getLatestInvoiceitemdetailId() {
 		int iddigit = 0;
@@ -458,25 +429,31 @@ public class InvoiceController {
 
 		iddigit++;
 
-		String str = String.format("IIT%04d", iddigit); 
+		String str = String.format("PRO%04d", iddigit);
 
 		return str;
 	}
 
-	
-	
 	@ModelAttribute("cust")
 	public List<Client> getAllCli() {
-		List<Client> emps = InvoiceService.getCust();
+		List<Client> client = InvoiceService.getCust();
 
-		return emps;
+		return client;
 	}
+
 	@ModelAttribute("pur")
 	public List<Purchase> getAllPur() {
-		List<Purchase> emps = InvoiceService.getPur();
+		List<Purchase> purchase = InvoiceService.getPur();
 
-		return emps;
+		return purchase;
 	}
-	
+
+
+	@ModelAttribute("inv")
+	public List<Invoice> getAllInv() {
+		List<Invoice> invoice = invoiceitemdetailService.getInv();
+
+		return invoice;
+	}
 	
 }

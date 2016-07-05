@@ -34,6 +34,68 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+				function formSubmit() {
+					document.getElementById("logoutForm").submit();
+				}
+				// Removes leading whitespaces
+				function LTrim( value ) {
+					
+					var re = /\s*((\S+\s*)*)/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes ending whitespaces
+				function RTrim( value ) {
+					
+					var re = /((\s*\S+)*)\s*/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes leading and ending whitespaces
+				function trim( value ) {
+					
+					return LTrim(RTrim(value));
+					
+				}
+				function doADD() 
+				{
+			 		var invoicenumber = document.getElementById('invoicenumber');	 
+			 		var tinvoicenumber = trim(invoicenumber.value);
+			 		var invoicedate = document.getElementById('invoicedate');	 
+			 		var tinvoicedate = trim(invoicedate.value);
+			 		var warrantydate = document.getElementById('warrantydate');	 
+			 		var twarrantydate = trim(warrantydate.value);
+			 		var warrantyterm = document.getElementById('warrantyterm');	 
+			 		var twarrantyterm = trim(warrantyterm.value);
+			 		var expirydate = document.getElementById('expirydate');	 
+			 		var texpirydate = trim(expirydate.value);
+			 		var customername = document.getElementById('customername');	 
+			 		var tcustomername = trim(customername.value);
+			 		var delchalnum = document.getElementById('delchalnum');	 
+			 		var tdelchalnum = trim(delchalnum.value);
+			 		var ponum = document.getElementById('ponum');	 
+			 		var tponum = trim(ponum.value);
+					
+
+					if ( tinvoicenumber.length > 0 && 
+							tinvoicedate.length > 0 && 
+							twarrantydate.length>0 &&
+							twarrantyterm.length >0&& 
+							texpirydate !='0' && 
+							tcustomername.length > 0 && 
+							tdelchalnum.length >0 &&
+							tponum!='0') 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+			</script>
 
 <style>
 .error {
@@ -59,14 +121,10 @@
 				value="${_csrf.token}" />
 
 </form>
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
+			
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -234,8 +292,9 @@
           </ul>
         </li>
         
-        
-        <li class="treeview">
+           
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -260,13 +319,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
+       
+        --%>    
+       
+
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -305,140 +367,100 @@
 <!-- AdminLTE for demo purposes -->
 <script src="resources/dist/js/demo.js"></script>
 
-</c:if>
+
 	<div align="center">
-		<form:form action="createnewinvoice" method="post" commandName="invoiceForm">
+		<form:form action="createnewinvoice" method="post" onsubmit="return doADD();" commandName="invoiceForm">
 		<form:hidden path="invoice_ID"/>
-		<br>
-				<br>
-		 <div class="box box-primary">
+	<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">New Invoice</h3>
+                 <h3 class="box-title">New Invoice</h3>
+            
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
-              <div class="box-body">
+              
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Invoice Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="invoice_number" class="form-control"  />
-                   
+                  
+  <form:input id="invoicenumber" path="invoice_number" placeholder="Invoice Number" class="form-control"  />                  </div>
+              
+               
+                <div class="form-group">
+                 
+ <form:input id="invoicedate" path="invoice_date" placeholder="Invoice Date" class="form-control"/>                   
                   </div>
               
-                </div>
-                
-
                
                 
-                
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Invoice Date:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="invoice_date" class="form-control"/>
-                
-                   
-                  </div>
-              
+                 <div class="form-group">
+                 
+ <form:input id="warrantydate" path="warrenty_date" placeholder="Warranty Date" class="form-control"/>                 
                 </div>
                 
+                   <div class="form-group">
+             
+ <form:input id="warrantyterm" path="warrenty_term" placeholder="Warranty Term" class="form-control"/>                  </div>
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Warranty Date:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="warrenty_date" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Warranty Term:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="warrenty_term" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                
-                
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Expiry Date:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="expairy_date" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Customer Name:</label>
+             
+ <form:input id="expirydate" path="expairy_date" placeholder="Expiry Date" class="form-control"/>				</div>
                   
-
-                  <div class="col-sm-10">
-                   <form:select path="custname" class = "form-control">
-							<form:option value="0" label="--- Select ---" />
+                 
+                  
+                    <div class="form-group">
+             
+ <form:select id="customername" path="custname"  class = "form-control">
+							<form:option value="0" label="Customer Name" />
 							<c:forEach items="${cust}" var="clientDetail">
 							
 							<form:option value="${clientDetail.client_ID}" label='${clientDetail.clientname}'/>
 							
 							</c:forEach>
 						</form:select>
-                 
-                   
-                  </div>
+                    				</div>
+                  
+                    <div class="form-group">
+             
+  <form:input id="delchalnum" path="del_chalan_number" placeholder="Delivery Chalan Number" class="form-control"/>
+                     					</div>
               
-                </div>
-                
-                
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Delivery Chalan Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="del_chalan_number" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Purchase Order Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:select path="po_number" class = "form-control">
-							<form:option value="0" label="--- Select ---" />
+             
+  <form:select id="ponum" path="po_number" class = "form-control">
+							<form:option value="0" label="Purchase Order Number" />
 							<c:forEach items="${pur}" var="purchaseDetail">
 							
 							<form:option value="${purchaseDetail.purchase_ID}" label='${purchaseDetail.purchase_number}'/>
 							
 							</c:forEach>
-						</form:select>
-                  </div>
-              
-                </div>
-                
-              </div>
+						</form:select>                     					</div>
               <!-- /.box-body -->
               <div class="box-footer">
          
                 <button type="submit" class="btn btn-primary pull-center">Create Invoice</button>
-              </div>
-         
-          </div>
-		
-		
-		
-		</form:form>
+				<button type="reset" class="btn btn-primary pull-center">Reset</button>             
+	</div>
+	</div>
+	</div>
 	</div>
 	
+	<br>	
+		</form:form>
+	</div>
+	</div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 
 

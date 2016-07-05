@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.cti.model.Client;
+import com.cti.model.Invoice;
 import com.cti.model.Invoiceitemdetail;
 //import com.cti.model.UserGroup;
 
@@ -37,11 +39,11 @@ public class InvoiceitemdetailDAOEx implements InvoiceitemdetailDAO {
 	}
 
 	@Override
-	public boolean saveInvoiceitemdetail(Invoiceitemdetail emp) {
+	public boolean saveInvoiceitemdetail(Invoiceitemdetail invoice) {
 		try {
 			
 
-			getCurrentSession().save(emp);
+			getCurrentSession().save(invoice);
 
 			return true;
 
@@ -53,9 +55,9 @@ public class InvoiceitemdetailDAOEx implements InvoiceitemdetailDAO {
 	}
 
 	@Override
-	public boolean updateInvoiceitemdetail(Invoiceitemdetail emp) {
+	public boolean updateInvoiceitemdetail(Invoiceitemdetail invoice) {
 		try {
-			getCurrentSession().update(emp);
+			getCurrentSession().update(invoice);
 			return true;
 		} catch (Exception e) {
 		
@@ -67,9 +69,9 @@ public class InvoiceitemdetailDAOEx implements InvoiceitemdetailDAO {
 	 
 
 		@Override
-		public Invoiceitemdetail getInvoiceitemdetailById(String emp) {
-			Invoiceitemdetail empl = (Invoiceitemdetail) getCurrentSession().get(Invoiceitemdetail.class, emp);
-			return empl;
+		public Invoiceitemdetail getInvoiceitemdetailById(String invoice) {
+			Invoiceitemdetail invoicel = (Invoiceitemdetail) getCurrentSession().get(Invoiceitemdetail.class, invoice);
+			return invoicel;
 		}
 
 		/*
@@ -101,7 +103,14 @@ public class InvoiceitemdetailDAOEx implements InvoiceitemdetailDAO {
 			} else
 				return null;
 		}
-	
+		@Override
+		public List<Invoiceitemdetail> listInvoiceitemdetail(String id) {
+
+						 
+			return getCurrentSession().createQuery(String.format("FROM Invoiceitemdetail WHERE invoicenumber= \'%s\'",id)).list();
+
+		}
+
 
 	@Override
 	public String getLatestInvoiceitemdetailID() {
@@ -115,36 +124,36 @@ public class InvoiceitemdetailDAOEx implements InvoiceitemdetailDAO {
 	
 	
 	@Override
-	public boolean removeInvoiceitemdetail(String employeename) {
+	public boolean removeInvoiceitemdetail(String invoice) {
 
-		return deleteAllInvoiceitemdetailRecords(employeename);
+		return deleteAllInvoiceitemdetailRecords(invoice);
 	}
 
-	private String getDeleteQuery(String table, String empname) {
+	private String getDeleteQuery(String table, String invoice) {
 
-		return String.format("DELETE FROM %s WHERE product_ID= \'%s\'", table,
-				empname);
+		return String.format("DELETE FROM %s WHERE invoicenumber= \'%s\'", table,
+				invoice);
 	}
 
-	private List<String> getAllDeletingQueries(String empname) {
+	private List<String> getAllDeletingQueries(String invoice) {
 
 		List<String> qryList = new ArrayList<String>();
 
 		Iterator<String> it = getAllInvoiceitemdetailChildNames().iterator();
 
 		while (it.hasNext()) {
-			qryList.add(getDeleteQuery(it.next(), empname));
+			qryList.add(getDeleteQuery(it.next(), invoice));
 		}
 
 		return qryList;
 	}
 
-	private boolean deleteAllInvoiceitemdetailRecords(String empname) {
+	private boolean deleteAllInvoiceitemdetailRecords(String invoice) {
 
 		try {
 			Session session = getCurrentSession();
 
-			List<String> it = getAllDeletingQueries(empname);
+			List<String> it = getAllDeletingQueries(invoice);
 
 			for (Iterator<String> iterator = it.iterator(); iterator.hasNext();) {
 
@@ -165,4 +174,11 @@ public class InvoiceitemdetailDAOEx implements InvoiceitemdetailDAO {
 
 		return childList;
 	}
+	
+	@Override
+	public List<Invoice> getInv() {
+		// TODO Auto-generated method stub
+		return getCurrentSession().createQuery("FROM Invoice").list();
+	}
+	
 }

@@ -38,11 +38,11 @@ public class InvoiceDAOEx implements InvoiceDAO {
 	}
 
 	@Override
-	public boolean saveInvoice(Invoice emp) {
+	public boolean saveInvoice(Invoice invoice) {
 		try {
 			
 
-			getCurrentSession().save(emp);
+			getCurrentSession().save(invoice);
 
 			return true;
 
@@ -54,9 +54,9 @@ public class InvoiceDAOEx implements InvoiceDAO {
 	}
 
 	@Override
-	public boolean updateInvoice(Invoice emp) {
+	public boolean updateInvoice(Invoice invoice) {
 		try {
-			getCurrentSession().update(emp);
+			getCurrentSession().update(invoice);
 			return true;
 		} catch (Exception e) {
 		
@@ -68,9 +68,9 @@ public class InvoiceDAOEx implements InvoiceDAO {
 	 
 
 		@Override
-		public Invoice getInvoiceById(String emp) {
-			Invoice empl = (Invoice) getCurrentSession().get(Invoice.class, emp);
-			return empl;
+		public Invoice getInvoiceById(String invoice) {
+			Invoice invoicel = (Invoice) getCurrentSession().get(Invoice.class, invoice);
+			return invoicel;
 		}
 
 		/*
@@ -116,36 +116,36 @@ public class InvoiceDAOEx implements InvoiceDAO {
 	
 	
 	@Override
-	public boolean removeInvoice(String employeename) {
+	public boolean removeInvoice(String invoice) {
 
-		return deleteAllInvoiceRecords(employeename);
+		return deleteAllInvoiceRecords(invoice);
 	}
 
-	private String getDeleteQuery(String table, String empname) {
+	private String getDeleteQuery(String table, String invoicename) {
 
 		return String.format("DELETE FROM %s WHERE invoice_ID= \'%s\'", table,
-				empname);
+				invoicename);
 	}
 
-	private List<String> getAllDeletingQueries(String empname) {
+	private List<String> getAllDeletingQueries(String invoicename) {
 
 		List<String> qryList = new ArrayList<String>();
 
 		Iterator<String> it = getAllInvoiceChildNames().iterator();
 
 		while (it.hasNext()) {
-			qryList.add(getDeleteQuery(it.next(), empname));
+			qryList.add(getDeleteQuery(it.next(), invoicename));
 		}
 
 		return qryList;
 	}
 
-	private boolean deleteAllInvoiceRecords(String empname) {
+	private boolean deleteAllInvoiceRecords(String invoicename) {
 
 		try {
 			Session session = getCurrentSession();
 
-			List<String> it = getAllDeletingQueries(empname);
+			List<String> it = getAllDeletingQueries(invoicename);
 
 			for (Iterator<String> iterator = it.iterator(); iterator.hasNext();) {
 

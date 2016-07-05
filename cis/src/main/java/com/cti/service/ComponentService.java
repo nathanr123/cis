@@ -9,17 +9,17 @@ import com.cti.model.Component;
 @Transactional
 public interface ComponentService {
 	
-public boolean saveComponent(Component it);
+public boolean saveComponent(Component component);
 	
-	public boolean updateComponent(Component it);
+	public boolean updateComponent(Component component);
 	
-	public boolean removeComponent(String itname);
+	public boolean removeComponent(String component);
 	
-	public Component getComponentById(String itname);
+	public Component getComponentById(String component);
 	
 	public String getLatestComponentID();
 
 	public List<Component> listComponent();	
 	
-	public List<Component> listComponent(List<String> itemsList);
+	public List<Component> listComponent(List<String> componentList);
 }

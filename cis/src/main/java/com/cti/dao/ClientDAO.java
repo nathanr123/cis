@@ -6,13 +6,13 @@ import com.cti.model.Client;
 
 public interface ClientDAO {
 	
-	public boolean saveClient(Client emp);
+	public boolean saveClient(Client client);
 	
-	public boolean updateClient(Client emp);
+	public boolean updateClient(Client client);
 	
-	public boolean removeClient(String empname);
+	public boolean removeClient(String clientname);
 	
-	public Client getClientById(String empname);
+	public Client getClientById(String clientname);
 	
 	public String getLatestClientID();
 

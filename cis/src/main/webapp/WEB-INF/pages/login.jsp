@@ -57,9 +57,12 @@
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
 </div>
+
 		</form>
+		
 </div>
 </div>
+
 </div>
 
 	<p>
@@ -92,6 +95,29 @@
     });
   });
 </script>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
 	
+  <footer>
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+   
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+   
+  </footer>
+
 </body>
+
 </html>

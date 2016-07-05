@@ -68,8 +68,8 @@
 				}
 			</script>
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -269,7 +269,7 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -313,120 +313,88 @@
 <script src="resources/dist/js/demo.js"></script>
 
 
-</c:if>
+
 
 	<div align="center">
 		<form:form action="createnewinvoiceitemdetail" method="post" commandName="invoiceitemdetailForm">
 		<form:hidden path="product_ID"/>
-			<br>
-				<br>
-		 <div class="box box-primary">
+			<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">New Invoice Item</h3>
+                 <h3 class="box-title">New Invoice Item</h3>
+            
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
-              <div class="box-body">
+              
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Invoice Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="invoicenumber" class="form-control" />
-                   
-                  </div>
+                  
+ <form:input path="invoicenumber" placeholder="Invoice Number" class="form-control" />                  </div>
               
-                </div>
-                
-                
+               
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Quantity:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="qty" class="form-control"/>
-                  <form:input path="qty" class="form-control"/>
-                   
+             <div class="row">   
+ <form:input path="qty" placeholder="Quantity" class="form-control"/>
+                  <form:input path="qty" placeholder="Unit" class="form-control"/>                   
                   </div>
               
-                </div>
-                
+               </div> 
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Unit Rate:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="unitrate" class="form-control"/>
-                   
-                  </div>
-              
+                 
+ <form:input path="unitrate" placeholder="Unitrate" class="form-control"/>                 
                 </div>
                 
+                   <div class="form-group">
+             
+ <form:input path="tax" placeholder="Tax" class="form-control"/>                  </div>
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Tax:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="tax" class="form-control"/>
-                   
-                  </div>
+             
+  <form:input path="taxamount" placeholder="Tax Amount" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalprice" placeholder="Total Price" class="form-control"/>     				</div>
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalpricetax" placeholder="Total Price (With tax)" class="form-control"/>  					</div>
               
-                </div>
-                
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Tax Amount:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="taxamount" class="form-control"/>
-                   
-                  </div>
+               <div class="form-group">
+             
+  <form:input path="serialnumber" placeholder="Serial Number" class="form-control"/>              
               
-                </div>
-                
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Total Price:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="totalprice" class="form-control"/>
-                   
-                  </div>
               
-                </div>
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Total Price (With tax):</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="totalpricetax" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Serial Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="serialnumber" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-              </div>
               <!-- /.box-body -->
               <div class="box-footer">
          
-                <button type="submit" class="btn btn-primary pull-center">Create Invoice Item</button>
-              </div>
-         
-          </div>
-		
-		
-		
+                <button type="submit" class="btn btn-primary pull-center">Create Component</button>
+				<button type="reset" class="btn btn-primary pull-center">Reset</button>             
+	</div>
+	</div>
+	</div>
+	</div>
+	
+	</div>	
 		</form:form>
 	</div>
+	</div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
 </html>

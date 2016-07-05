@@ -35,7 +35,53 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+				function formSubmit() {
+					document.getElementById("logoutForm").submit();
+				}
+				
+				// Removes leading whitespaces
+				function LTrim( value ) {
+					
+					var re = /\s*((\S+\s*)*)/;
+					return value.replace(re, "$1");
+					
+				}
 
+				// Removes ending whitespaces
+				function RTrim( value ) {
+					
+					var re = /((\s*\S+)*)\s*/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes leading and ending whitespaces
+				function trim( value ) {
+					
+					return LTrim(RTrim(value));
+					
+				}
+				
+			 	function doADD()
+			 	{
+			 		var clientName = document.getElementById('clientname');	 	
+
+					var name = trim(clientName.value);
+					
+					 	
+			 		if(name.length >0)
+			 		{
+			 			document.forms[0].submit();
+			 		}
+			 		
+			 	 	if(name.length == 0)
+			 		{
+			 	 			alert("Client Name is Missing");
+			 	 			return false;
+			 	 	}
+			 	 }
+			</script>
 <style>
 .error {
 	color: #ff0000;
@@ -67,9 +113,9 @@
 			</script>
 			</form>
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
+			
 <div class="wrapper">
-
+<c:if test="${pageContext.request.userPrincipal.name != null}">
   <header class="main-header">
 
     <!-- Logo -->
@@ -236,8 +282,8 @@
           </ul>
         </li>
         
-        
-        <li class="treeview">
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -262,12 +308,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
+       
+        --%>    
+       
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
+
+</c:if>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -282,6 +332,7 @@
         </li>
       </ol>
     </section>
+
 
    
 
@@ -307,85 +358,83 @@
 <!-- AdminLTE for demo purposes -->
 <script src="resources/dist/js/demo.js"></script>
 
-</c:if>
+
 			<c:if test="${not empty msg}">
 				<div class="msg">${msg}</div>
 			</c:if>
 		
 
 	<div align="center">
-		<form:form action="createnewclient" method="post" commandName="clientForm">
+		<form:form action="createnewclient" onsubmit="return doADD();" method="post" commandName="clientForm">
 		<form:hidden path="client_ID"/>
 		
-		
-		<br>
-				<br>
+		<div class="login-box">
+  
+  <div class="login-box-body">
 		
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">New Client</h3>
+                 <h3 class="box-title">New Client</h3>
+            
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
               <div class="box-body">
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Client Name:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="clientname" class="form-control"/>
+                  
+                 <form:input id="clientname" path="clientname" placeholder="Clientname" class="form-control"/>
                    
                   </div>
               
-                </div>
-                
-                
+               
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Contact Person:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="contactperson" class="form-control"/>
+                 
+                 <form:input id="contactperson" path="contactperson" placeholder="Contactperson" class="form-control"/>
                    
                   </div>
               
+               
+                
+                 <div class="form-group">
+                 
+                 <form:input id="department" path="department" placeholder="Department" class="form-control"/>
+                   
+                 
                 </div>
                 
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Department:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="department" class="form-control"/>
+             
+                 <form:input id="address" path="address" placeholder="Address" class="form-control"/>
                    
                   </div>
               
-                </div>
-                
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Address:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="address" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
          
                 <button type="submit" class="btn btn-primary pull-center">Create Client</button>
-              </div>
-         
-          </div>
-		
-		
-		
-		</form:form>
+				<button type="reset" class="btn btn-primary pull-center">Reset</button>             
 	</div>
+	</div>
+	</div>
+	</div>
+	<br>
+	
+</form:form>
+</div>
+</div>
 
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
+
 </html>

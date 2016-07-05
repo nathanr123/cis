@@ -37,6 +37,55 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+				function formSubmit() {
+					document.getElementById("logoutForm").submit();
+				}
+				// Removes leading whitespaces
+				function LTrim( value ) {
+					
+					var re = /\s*((\S+\s*)*)/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes ending whitespaces
+				function RTrim( value ) {
+					
+					var re = /((\s*\S+)*)\s*/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes leading and ending whitespaces
+				function trim( value ) {
+					
+					return LTrim(RTrim(value));
+					
+				}
+				function doADD() 
+				{
+			 		var purchasenumber = document.getElementById('purchasenumber');	 
+			 		var tpurchasenumber = trim(purchasenumber.value);
+			 		var purchasedate = document.getElementById('purchasedate');	 
+			 		var tpurchasedate = trim(purchasedate.value);
+			 		var purchasedeldate = document.getElementById('purchasedeldate');	 
+			 		var tpurchasedeldate = trim(purchasedeldate.value);
+			 		var customername = document.getElementById('customername');	 
+			 		var tcustomername = trim(customername.value);
+			 		
+					if ( tpurchasenumber.length > 0 && 
+							tpurchasedate.length > 0 && 
+							tpurchasedeldate.length>0 &&
+							tcustomername.length > 0 ) 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+			</script>
 
 <style>
 .error {
@@ -61,15 +110,10 @@
 				value="${_csrf.token}" />
 </form>
 
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
 	
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -238,7 +282,9 @@
         </li>
         
         
-        <li class="treeview">
+             
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -263,12 +309,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
+       
+        --%>    
+       
         
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
+</c:if>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -308,83 +358,76 @@
 <!-- AdminLTE for demo purposes -->
 <script src="resources/dist/js/demo.js"></script>
 
-</c:if>
+
 
 	<div align="center">
-		<form:form action="createnewpurchase" method="post" commandName="purchaseForm">
+		<form:form action="createnewpurchase" method="post" onsubmit="return doADD();" commandName="purchaseForm">
 		<form:hidden path="purchase_ID"/>
-		<br>
-				<br>
-			 <div class="box box-primary">
+		
+		<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">New Purchase</h3>
+                 <h3 class="box-title">New Purchase</h3>
+            
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
-              <div class="box-body">
+              
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Purchase Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="purchase_number" class="form-control"/>
-                   
+                  
+<form:input id="purchasenumber" placeholder="Purchase Number" path="purchase_number" class="form-control"/>                  </div>
+              
+               
+                <div class="form-group">
+                 
+   <form:input id="purchasedate" placeholder="Purchase Date" path="purchase_date" class="form-control"/>                   
                   </div>
               
-                </div>
-                
-                
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Purchase Date:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="purchase_date" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
+               
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Purchase Delivery Date:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="purchase_del_date" class="form-control"/>
-                   
-                  </div>
-              
+                 
+ <form:input id="purchasedeldate" placeholder="Purchase Delivery Date" path="purchase_del_date" class="form-control"/>                 
                 </div>
                 
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Customer Name:</label>
-
-                  <div class="col-sm-10">
+                   <div class="form-group">
              
-                    <form:select path="purchase_cust_name" class = "form-control">
-							<form:option value="0" label="--- Select ---" />
+  <form:select id="customername" path="purchase_cust_name" class = "form-control">
+							<form:option value="0" label="Customer Name" />
 							<c:forEach items="${cust}" var="clientDetail">
 							
 							<form:option value="${clientDetail.client_ID}" label='${clientDetail.clientname}'/>
 							
 							</c:forEach>
-						</form:select>
-                  </div>
-              
-                </div>
+						</form:select>                  </div>
                 
-              </div>
+               
               <!-- /.box-body -->
               <div class="box-footer">
          
                 <button type="submit" class="btn btn-primary pull-center">Create Purchase</button>
-              </div>
-         
-          </div>
-		
-		
+				<button type="reset" class="btn btn-primary pull-center">Reset</button>             
+	</div>
+	</div>
+	</div>
+	</div>
+	<br>
 		</form:form>
 	</div>
+	</div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
 </html>

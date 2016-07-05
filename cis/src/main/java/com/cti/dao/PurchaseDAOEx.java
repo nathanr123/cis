@@ -39,11 +39,11 @@ public class PurchaseDAOEx implements PurchaseDAO {
 	}
 
 	@Override
-	public boolean savePurchase(Purchase emp) {
+	public boolean savePurchase(Purchase purchase) {
 		try {
 			
 
-			getCurrentSession().save(emp);
+			getCurrentSession().save(purchase);
 
 			return true;
 
@@ -55,9 +55,9 @@ public class PurchaseDAOEx implements PurchaseDAO {
 	}
 
 	@Override
-	public boolean updatePurchase(Purchase emp) {
+	public boolean updatePurchase(Purchase purchase) {
 		try {
-			getCurrentSession().update(emp);
+			getCurrentSession().update(purchase);
 			return true;
 		} catch (Exception e) {
 		
@@ -69,9 +69,9 @@ public class PurchaseDAOEx implements PurchaseDAO {
 	 
 
 		@Override
-		public Purchase getPurchaseById(String emp) {
-			Purchase empl = (Purchase) getCurrentSession().get(Purchase.class, emp);
-			return empl;
+		public Purchase getPurchaseById(String purchase) {
+			Purchase purchasel = (Purchase) getCurrentSession().get(Purchase.class, purchase);
+			return purchasel;
 		}
 
 		/*
@@ -117,36 +117,36 @@ public class PurchaseDAOEx implements PurchaseDAO {
 	
 	
 	@Override
-	public boolean removePurchase(String employeename) {
+	public boolean removePurchase(String purchase) {
 
-		return deleteAllPurchaseRecords(employeename);
+		return deleteAllPurchaseRecords(purchase);
 	}
 
-	private String getDeleteQuery(String table, String empname) {
+	private String getDeleteQuery(String table, String purchase) {
 
 		return String.format("DELETE FROM %s WHERE purchase_ID= \'%s\'", table,
-				empname);
+				purchase);
 	}
 
-	private List<String> getAllDeletingQueries(String empname) {
+	private List<String> getAllDeletingQueries(String purchase) {
 
 		List<String> qryList = new ArrayList<String>();
 
 		Iterator<String> it = getAllPurchaseChildNames().iterator();
 
 		while (it.hasNext()) {
-			qryList.add(getDeleteQuery(it.next(), empname));
+			qryList.add(getDeleteQuery(it.next(), purchase));
 		}
 
 		return qryList;
 	}
 
-	private boolean deleteAllPurchaseRecords(String empname) {
+	private boolean deleteAllPurchaseRecords(String purchase) {
 
 		try {
 			Session session = getCurrentSession();
 
-			List<String> it = getAllDeletingQueries(empname);
+			List<String> it = getAllDeletingQueries(purchase);
 
 			for (Iterator<String> iterator = it.iterator(); iterator.hasNext();) {
 

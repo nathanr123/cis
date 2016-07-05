@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import com.cti.model.Invoiceitemdetail;
 import com.cti.model.Purchaseitemdetail;
 //import com.cti.model.UserGroup;
 
@@ -37,11 +38,11 @@ public class PurchaseitemdetailDAOEx implements PurchaseitemdetailDAO {
 	}
 
 	@Override
-	public boolean savePurchaseitemdetail(Purchaseitemdetail emp) {
+	public boolean savePurchaseitemdetail(Purchaseitemdetail purchaseitem) {
 		try {
 			
 
-			getCurrentSession().save(emp);
+			getCurrentSession().save(purchaseitem);
 
 			return true;
 
@@ -53,9 +54,9 @@ public class PurchaseitemdetailDAOEx implements PurchaseitemdetailDAO {
 	}
 
 	@Override
-	public boolean updatePurchaseitemdetail(Purchaseitemdetail emp) {
+	public boolean updatePurchaseitemdetail(Purchaseitemdetail purchaseitem) {
 		try {
-			getCurrentSession().update(emp);
+			getCurrentSession().update(purchaseitem);
 			return true;
 		} catch (Exception e) {
 		
@@ -67,9 +68,9 @@ public class PurchaseitemdetailDAOEx implements PurchaseitemdetailDAO {
 	 
 
 		@Override
-		public Purchaseitemdetail getPurchaseitemdetailById(String emp) {
-			Purchaseitemdetail empl = (Purchaseitemdetail) getCurrentSession().get(Purchaseitemdetail.class, emp);
-			return empl;
+		public Purchaseitemdetail getPurchaseitemdetailById(String purchaseitem) {
+			Purchaseitemdetail purchaseiteml = (Purchaseitemdetail) getCurrentSession().get(Purchaseitemdetail.class, purchaseitem);
+			return purchaseiteml;
 		}
 
 		/*
@@ -102,6 +103,14 @@ public class PurchaseitemdetailDAOEx implements PurchaseitemdetailDAO {
 				return null;
 		}
 	
+		
+		@Override
+		public List<Purchaseitemdetail> listPurchaseitemdetail(String id) {
+
+						 
+			return getCurrentSession().createQuery(String.format("FROM Purchaseitemdetail WHERE purchasenumber= \'%s\'",id)).list();
+
+		}
 
 	@Override
 	public String getLatestPurchaseitemdetailID() {
@@ -115,36 +124,36 @@ public class PurchaseitemdetailDAOEx implements PurchaseitemdetailDAO {
 	
 	
 	@Override
-	public boolean removePurchaseitemdetail(String employeename) {
+	public boolean removePurchaseitemdetail(String purchaseitem) {
 
-		return deleteAllPurchaseitemdetailRecords(employeename);
+		return deleteAllPurchaseitemdetailRecords(purchaseitem);
 	}
 
-	private String getDeleteQuery(String table, String empname) {
+	private String getDeleteQuery(String table, String purchaseitem) {
 
-		return String.format("DELETE FROM %s WHERE product_ID= \'%s\'", table,
-				empname);
+		return String.format("DELETE FROM %s WHERE purchasenumber= \'%s\'", table,
+				purchaseitem);
 	}
 
-	private List<String> getAllDeletingQueries(String empname) {
+	private List<String> getAllDeletingQueries(String purchaseitem) {
 
 		List<String> qryList = new ArrayList<String>();
 
 		Iterator<String> it = getAllPurchaseitemdetailChildNames().iterator();
 
 		while (it.hasNext()) {
-			qryList.add(getDeleteQuery(it.next(), empname));
+			qryList.add(getDeleteQuery(it.next(), purchaseitem));
 		}
 
 		return qryList;
 	}
 
-	private boolean deleteAllPurchaseitemdetailRecords(String empname) {
+	private boolean deleteAllPurchaseitemdetailRecords(String purchaseitem) {
 
 		try {
 			Session session = getCurrentSession();
 
-			List<String> it = getAllDeletingQueries(empname);
+			List<String> it = getAllDeletingQueries(purchaseitem);
 
 			for (Iterator<String> iterator = it.iterator(); iterator.hasNext();) {
 

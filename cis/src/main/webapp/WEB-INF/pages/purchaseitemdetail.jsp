@@ -411,6 +411,8 @@
               <div class="box-footer">
          
                 <button type="submit" class="btn btn-primary pull-center">Create Purchase Item</button>
+				<button type="reset" class="btn btn-primary pull-center">Reset</button>             
+
               </div>
          
           </div>

@@ -30,7 +30,7 @@ public class ClientController {
 	ClientService clientService;
 	@InitBinder("clientForm")
 	protected void initComponentBinder(WebDataBinder binder) {
-		//binder.setValidator(userValidator);
+		
 	}
 
 	@RequestMapping(value = "/newclient", method = RequestMethod.GET)
@@ -39,9 +39,9 @@ public class ClientController {
 
 		ModelAndView mav = new ModelAndView();
 
-		Client userForm = new Client();
+		Client clientForm = new Client();
 
-		model.put("clientForm", userForm);
+		model.put("clientForm", clientForm);
 
 		mav.setViewName("client");
 
@@ -51,7 +51,7 @@ public class ClientController {
 	
 
 	@RequestMapping(value = "/createnewclient", method = RequestMethod.POST)
-	public ModelAndView doCreateNewClient(@ModelAttribute("clientForm") Client user,
+	public ModelAndView doCreateNewClient(@ModelAttribute("clientForm") Client client,
 			BindingResult result, Map<String, Object> model,
 			SessionStatus status) {
 
@@ -67,25 +67,25 @@ public class ClientController {
 		} else {
 			Date d = new Date();
 
-			user.setClientname(user.getClientname());
+			client.setClientname(client.getClientname());
 			
-			user.setContactperson(user.getContactperson());
+			client.setContactperson(client.getContactperson());
 			
-			user.setDepartment(user.getDepartment());
+			client.setDepartment(client.getDepartment());
 			
-			user.setAddress(user.getAddress());
+			client.setAddress(client.getAddress());
 			
 			String id = getLatestClientId();
 			
-			user.setClient_ID(id);
+			client.setClient_ID(id);
 
-			user.setCreatedtime(d);
+			client.setCreatedtime(d);
 
-			user.setModifiedtime(d);
+			client.setModifiedtime(d);
 
 			
 
-			clientService.saveClient(user);
+			clientService.saveClient(client);
 
 			mav.addObject("msg"," New Client Created Successfully");
 
@@ -97,20 +97,20 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = "/loadclient", method = RequestMethod.GET)
-	public ModelAndView goClientUpdate(@RequestParam("client") String user,
+	public ModelAndView goClientUpdate(@RequestParam("client") String client,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		Client userdetailForm = clientService.getClientById(user);
+		Client clientForm = clientService.getClientById(client);
 
-		if (userdetailForm == null) {
+		if (clientForm == null) {
 
-			userdetailForm = new Client();
+			clientForm = new Client();
 
 		}
 
-		model.put("clientForm", userdetailForm);
+		model.put("clientForm", clientForm);
 
 		mav.setViewName("updateclient");
 
@@ -119,16 +119,16 @@ public class ClientController {
 	}
 
 	@RequestMapping(value = "/deleteclient", method = RequestMethod.GET)
-	public ModelAndView deleteClient(@RequestParam("client") String user,
+	public ModelAndView deleteClient(@RequestParam("client") String client,
 			Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
 
-		if (!clientService.removeClient(user)) {
+		if (!clientService.removeClient(client)) {
 
-			mav.addObject("msg", "Unable to delete " + user + ".");
+			mav.addObject("msg", "Unable to delete " + client + ".");
 		} else {
-			mav.addObject("msg", user + " successfully deleted.");
+			mav.addObject("msg", client + " successfully deleted.");
 		}
 		mav.addObject("clientlist", getAllClient());
 
@@ -140,7 +140,7 @@ public class ClientController {
 
 	@RequestMapping(value = "/updateclient", method = RequestMethod.POST)
 	public ModelAndView updateClient(
-			@ModelAttribute("clientForm") Client userDetail,
+			@ModelAttribute("clientForm") Client client,
 			BindingResult result, Map<String, Object> model) {
 
 		ModelAndView mav = new ModelAndView();
@@ -160,11 +160,11 @@ public class ClientController {
 
 			Date d = new Date();
 
-			userDetail.setCreatedtime(d);
+			client.setCreatedtime(d);
 
-			userDetail.setModifiedtime(d);
+			client.setModifiedtime(d);
 
-				clientService.updateClient(userDetail);
+				clientService.updateClient(client);
 
 				view = "index";
 
@@ -193,26 +193,15 @@ public class ClientController {
 	}
 
 	public List<Client> getAllClient() {
-		List<Client> emps = clientService.listClient();
+		List<Client> client = clientService.listClient();
 
-		return emps;
+		return client;
 	}
 
-	private Client getClient(String username) {
-		return clientService.getClientById(username);
+	private Client getClient(String client) {
+		return clientService.getClientById(client);
 	}
 
-	@ModelAttribute("priorityLevel")
-	public Map<Integer, Integer> getPriority() {
-
-		Map<Integer, Integer> userPriorty = new HashMap<Integer, Integer>();
-
-		for (int i = 10; i > 0; i--) {
-			userPriorty.put(i, i);
-		}
-
-		return userPriorty;
-	}
 
 	private String getLatestClientId() {
 		int iddigit = 0;

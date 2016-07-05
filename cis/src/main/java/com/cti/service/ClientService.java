@@ -9,17 +9,17 @@ import com.cti.model.Client;
 @Transactional
 public interface ClientService {
 	
-public boolean saveClient(Client it);
+public boolean saveClient(Client client);
 	
-	public boolean updateClient(Client it);
+	public boolean updateClient(Client client);
 	
-	public boolean removeClient(String itname);
+	public boolean removeClient(String client);
 	
-	public Client getClientById(String itname);
+	public Client getClientById(String client);
 	
 	public String getLatestClientID();
 
 	public List<Client> listClient();	
 	
-	public List<Client> listClient(List<String> itemsList);
+	public List<Client> listClient(List<String> clientList);
 }

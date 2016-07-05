@@ -37,11 +37,11 @@ public class ItemsDAOEx implements ItemsDAO {
 	}
 
 	@Override
-	public boolean saveItems(Items emp) {
+	public boolean saveItems(Items items) {
 		try {
 			
 
-			getCurrentSession().save(emp);
+			getCurrentSession().save(items);
 
 			return true;
 
@@ -53,9 +53,9 @@ public class ItemsDAOEx implements ItemsDAO {
 	}
 
 	@Override
-	public boolean updateItems(Items emp) {
+	public boolean updateItems(Items items) {
 		try {
-			getCurrentSession().update(emp);
+			getCurrentSession().update(items);
 			return true;
 		} catch (Exception e) {
 		
@@ -67,9 +67,9 @@ public class ItemsDAOEx implements ItemsDAO {
 	 
 
 		@Override
-		public Items getItemsById(String emp) {
-			Items empl = (Items) getCurrentSession().get(Items.class, emp);
-			return empl;
+		public Items getItemsById(String items) {
+			Items itemsl = (Items) getCurrentSession().get(Items.class, items);
+			return itemsl;
 		}
 
 		/*
@@ -115,36 +115,36 @@ public class ItemsDAOEx implements ItemsDAO {
 	
 	
 	@Override
-	public boolean removeItems(String employeename) {
+	public boolean removeItems(String items) {
 
-		return deleteAllItemsRecords(employeename);
+		return deleteAllItemsRecords(items);
 	}
 
-	private String getDeleteQuery(String table, String empname) {
+	private String getDeleteQuery(String table, String items) {
 
 		return String.format("DELETE FROM %s WHERE product_ID= \'%s\'", table,
-				empname);
+				items);
 	}
 
-	private List<String> getAllDeletingQueries(String empname) {
+	private List<String> getAllDeletingQueries(String items) {
 
 		List<String> qryList = new ArrayList<String>();
 
 		Iterator<String> it = getAllItemsChildNames().iterator();
 
 		while (it.hasNext()) {
-			qryList.add(getDeleteQuery(it.next(), empname));
+			qryList.add(getDeleteQuery(it.next(), items));
 		}
 
 		return qryList;
 	}
 
-	private boolean deleteAllItemsRecords(String empname) {
+	private boolean deleteAllItemsRecords(String items) {
 
 		try {
 			Session session = getCurrentSession();
 
-			List<String> it = getAllDeletingQueries(empname);
+			List<String> it = getAllDeletingQueries(items);
 
 			for (Iterator<String> iterator = it.iterator(); iterator.hasNext();) {
 

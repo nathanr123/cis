@@ -34,7 +34,56 @@
   <![endif]-->
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+				function formSubmit() {
+					document.getElementById("logoutForm").submit();
+				}
+				// Removes leading whitespaces
+				function LTrim( value ) {
+					
+					var re = /\s*((\S+\s*)*)/;
+					return value.replace(re, "$1");
+					
+				}
 
+				// Removes ending whitespaces
+				function RTrim( value ) {
+					
+					var re = /((\s*\S+)*)\s*/;
+					return value.replace(re, "$1");
+					
+				}
+
+				// Removes leading and ending whitespaces
+				function trim( value ) {
+					
+					return LTrim(RTrim(value));
+					
+				}
+				function doADD() 
+				{
+			 		var username = document.getElementById('username');	 
+			 		var tusername = trim(username.value);
+			 		var password = document.getElementById('password');	 
+			 		var tpassword = trim(password.value);
+			 		var confirmpassword = document.getElementById('confirmpassword');	 
+			 		var tconfirmpassword = trim(confirmpassword.value);
+			 		var priority = document.getElementById('priority');	 
+			 		var tpriority = trim(priority.value);
+			 		
+
+					if ( tusername.length > 0 && 
+							tpassword.length > 0 && 
+							tconfirmpassword.length>0 &&
+							tpriority.length!='0') 
+					{
+						
+							document.forms[0].submit();	
+									
+					} 
+					else{alert("Enter All Fields"); return false; }
+				}
+			</script>
 <style>
 .error {
 	color: #ff0000;
@@ -58,15 +107,11 @@
 				value="${_csrf.token}" />
 
 </form>
-			<script>
-				function formSubmit() {
-					document.getElementById("logoutForm").submit();
-				}
-			</script>
+			
 	
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -234,8 +279,9 @@
           </ul>
         </li>
         
-        
-        <li class="treeview">
+          
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -260,13 +306,17 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
+       
+        --%>    
+       
+
         
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -305,83 +355,75 @@
 <!-- AdminLTE for demo purposes -->
 <script src="resources/dist/js/demo.js"></script>
 
-</c:if>
+
 
 	<div align="center">
-		<form:form action="createnewuser" method="post" commandName="userForm">
-			
-				
-		<br>
-				<br>
+		<form:form action="createnewuser" method="post" onsubmit="return doADD();" commandName="userForm">
+		<div class="login-box">
+  
+  <div class="login-box-body">
 		
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">New User</h3>
+                 <h3 class="box-title">New User</h3>
+            
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
-              <div class="box-body">
+              
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">User Name:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="username" class="form-control"/>
-                   
+                  
+<form:input id="username" placeholder="Username" path="username" class="form-control"/>                  </div>
+              
+               
+                <div class="form-group">
+                 
+ <form:password id="password" placeholder="Password" path="password" class="form-control"/>                   
                   </div>
               
-                </div>
-                
-                
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Password:</label>
-
-                  <div class="col-sm-10">
-                 <form:password path="password" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
+               
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Confirm Password:</label>
-
-                  <div class="col-sm-10">
-                 <form:password path="confirmPassword" class="form-control"/>
-                   
-                  </div>
-              
+                 
+<form:password id="confirmpassword" placeholder="Confirm Password" path="confirmPassword" class="form-control"/>
+                 
                 </div>
                 
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Priority:</label>
-
-                  <div class="col-sm-10">
-                  <form:select path="priority" class = "form-control">
+                   <div class="form-group">
+             
+   <form:select id="priority" placeholder="Priority" path="priority" class = "form-control">
 							<form:option value="-1" label="--- Select ---" />
 							<form:options items="${priorityLevel}" />
 						</form:select>
               
                    <form:checkbox path="enabled" label="Enable"
-							title="Enable" />
-                  </div>
-              
-                </div>
+							title="Enable" />                  </div>
                 
-              </div>
+                
+              
               <!-- /.box-body -->
               <div class="box-footer">
          
                 <button type="submit" class="btn btn-primary pull-center">Create User</button>
-              </div>
-         
-          </div>
-		
-		
+				<button type="reset" class="btn btn-primary pull-center">Reset</button>             
+	</div>
+	</div>
+	</div>
+	</div>
+	<br>
 		</form:form>
 	</div>
+	</div>
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 	</sec:authorize>
 </body>
 </html>

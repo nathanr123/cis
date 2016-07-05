@@ -27,8 +27,8 @@ public class PurchaseitemdetailServiceEx implements PurchaseitemdetailService {
 	 * @see com.cti.service.UserService#saveUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean savePurchaseitemdetail(Purchaseitemdetail it) {
-		return PurchaseitemdetailDAO.savePurchaseitemdetail(it);
+	public boolean savePurchaseitemdetail(Purchaseitemdetail purchaseitem) {
+		return PurchaseitemdetailDAO.savePurchaseitemdetail(purchaseitem);
 
 	}
 
@@ -38,8 +38,8 @@ public class PurchaseitemdetailServiceEx implements PurchaseitemdetailService {
 	 * @see com.cti.service.UserService#updateUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean updatePurchaseitemdetail(Purchaseitemdetail it) {
-		return PurchaseitemdetailDAO.updatePurchaseitemdetail(it);
+	public boolean updatePurchaseitemdetail(Purchaseitemdetail purchaseitem) {
+		return PurchaseitemdetailDAO.updatePurchaseitemdetail(purchaseitem);
 
 	}
 
@@ -49,8 +49,8 @@ public class PurchaseitemdetailServiceEx implements PurchaseitemdetailService {
 	 * @see com.cti.service.UserService#removeUser(java.lang.String)
 	 */
 	@Override
-	public boolean removePurchaseitemdetail(String it) {
-		return PurchaseitemdetailDAO.removePurchaseitemdetail(it);
+	public boolean removePurchaseitemdetail(String purchaseitem) {
+		return PurchaseitemdetailDAO.removePurchaseitemdetail(purchaseitem);
 	}
 	
 	@Override
@@ -64,8 +64,8 @@ public class PurchaseitemdetailServiceEx implements PurchaseitemdetailService {
 	 * @see com.cti.service.UserService#getUserById(java.lang.String)
 	 */
 	@Override
-	public Purchaseitemdetail getPurchaseitemdetailById(String it) {
-		return PurchaseitemdetailDAO.getPurchaseitemdetailById(it);
+	public Purchaseitemdetail getPurchaseitemdetailById(String purchaseitem) {
+		return PurchaseitemdetailDAO.getPurchaseitemdetailById(purchaseitem);
 	}
 
 	/*
@@ -78,6 +78,12 @@ public class PurchaseitemdetailServiceEx implements PurchaseitemdetailService {
 		return PurchaseitemdetailDAO.listPurchaseitemdetail();
 	}
 
+	@Override
+	public List<Purchaseitemdetail> listPurchaseitemdetail(String pur) {
+		return PurchaseitemdetailDAO.listPurchaseitemdetail(pur);
+	}
+
+	
 	@Override
 	public List<Purchaseitemdetail> listPurchaseitemdetail(List<String> PurchaseitemdetailList) {
 		// TODO Auto-generated method stub

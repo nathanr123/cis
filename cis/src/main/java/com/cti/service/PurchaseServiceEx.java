@@ -29,8 +29,8 @@ public class PurchaseServiceEx implements PurchaseService {
 	 * @see com.cti.service.UserService#saveUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean savePurchase(Purchase it) {
-		return purchaseDAO.savePurchase(it);
+	public boolean savePurchase(Purchase purchase) {
+		return purchaseDAO.savePurchase(purchase);
 
 	}
 
@@ -40,8 +40,8 @@ public class PurchaseServiceEx implements PurchaseService {
 	 * @see com.cti.service.UserService#updateUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean updatePurchase(Purchase it) {
-		return purchaseDAO.updatePurchase(it);
+	public boolean updatePurchase(Purchase purchase) {
+		return purchaseDAO.updatePurchase(purchase);
 
 	}
 
@@ -51,8 +51,8 @@ public class PurchaseServiceEx implements PurchaseService {
 	 * @see com.cti.service.UserService#removeUser(java.lang.String)
 	 */
 	@Override
-	public boolean removePurchase(String it) {
-		return purchaseDAO.removePurchase(it);
+	public boolean removePurchase(String purchase) {
+		return purchaseDAO.removePurchase(purchase);
 	}
 	
 	@Override
@@ -66,8 +66,8 @@ public class PurchaseServiceEx implements PurchaseService {
 	 * @see com.cti.service.UserService#getUserById(java.lang.String)
 	 */
 	@Override
-	public Purchase getPurchaseById(String it) {
-		return purchaseDAO.getPurchaseById(it);
+	public Purchase getPurchaseById(String purchase) {
+		return purchaseDAO.getPurchaseById(purchase);
 	}
 
 	/*

@@ -8,13 +8,13 @@ import com.cti.model.Purchase;
 
 public interface InvoiceDAO {
 	
-	public boolean saveInvoice(Invoice emp);
+	public boolean saveInvoice(Invoice invoice);
 	
-	public boolean updateInvoice(Invoice emp);
+	public boolean updateInvoice(Invoice invoice);
 	
-	public boolean removeInvoice(String empname);
+	public boolean removeInvoice(String invoice);
 	
-	public Invoice getInvoiceById(String empname);
+	public Invoice getInvoiceById(String invoice);
 	
 	public String getLatestInvoiceID();
 

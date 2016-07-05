@@ -6,13 +6,13 @@ import com.cti.model.Component;
 
 public interface ComponentDAO {
 	
-	public boolean saveComponent(Component emp);
+	public boolean saveComponent(Component component);
 	
-	public boolean updateComponent(Component emp);
+	public boolean updateComponent(Component component);
 	
-	public boolean removeComponent(String empname);
+	public boolean removeComponent(String component);
 	
-	public Component getComponentById(String empname);
+	public Component getComponentById(String component);
 	
 	public String getLatestComponentID();
 

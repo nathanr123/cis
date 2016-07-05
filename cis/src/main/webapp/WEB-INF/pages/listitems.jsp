@@ -55,8 +55,8 @@
 			</script>
 	
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -225,7 +225,9 @@
         </li>
         
         
-        <li class="treeview">
+              
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -250,12 +252,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
+       
+        --%>    
+       
+
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
+</c:if>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -274,7 +280,6 @@
     </section>
 
 
-</c:if>
 <br>
 <br>
 <c:if test="${not empty msg}">
@@ -317,8 +322,8 @@
 				<c:out value="${sno }"/></td>
 					<td>${itemsDetail.part_number}</td>
 					<td>${itemsDetail.description}</td>
-					<td> <a href="${contextPath}/loaditems?items=${itemsDetail.product_ID}">Update</a></td>
-					<td><a href="${contextPath}/deleteitems?items=${itemsDetail.product_ID}">Delete</a></td>
+					<td> <a href="${contextPath}/loaditems?items=${itemsDetail.product_ID}"><i class="fa fa-refresh"></i></a></td>
+					<td><a href="${contextPath}/deleteitems?items=${itemsDetail.product_ID}"><i class="fa fa-trash-o"></i></a></td>
 				</tr>
 			</c:forEach>            
                 </tbody>
@@ -368,7 +373,16 @@
     });
   });
 </script>
+</div>
 
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 </sec:authorize>
 </body>
 </html>

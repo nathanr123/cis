@@ -6,17 +6,20 @@ import com.cti.model.Purchaseitemdetail;
 
 public interface PurchaseitemdetailDAO {
 	
-	public boolean savePurchaseitemdetail(Purchaseitemdetail emp);
+	public boolean savePurchaseitemdetail(Purchaseitemdetail purchaseitem);
 	
-	public boolean updatePurchaseitemdetail(Purchaseitemdetail emp);
+	public boolean updatePurchaseitemdetail(Purchaseitemdetail purchaseitem);
 	
-	public boolean removePurchaseitemdetail(String empname);
+	public boolean removePurchaseitemdetail(String purchaseitem);
 	
-	public Purchaseitemdetail getPurchaseitemdetailById(String empname);
+	public Purchaseitemdetail getPurchaseitemdetailById(String purchaseitem);
 	
 	public String getLatestPurchaseitemdetailID();
 
 	public List<Purchaseitemdetail> listPurchaseitemdetail();	
+
+	public List<Purchaseitemdetail> listPurchaseitemdetail(String pur);	
+
 	
 	public List<Purchaseitemdetail> listPurchaseitemdetail(List<String> PurchaseitemdetailList);
 }

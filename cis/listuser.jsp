@@ -1,17 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Change Password</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>User List</title>
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!-- DataTables -->
+  <link rel="stylesheet" href="resources/plugins/datatables/dataTables.bootstrap.css">
 
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -38,20 +38,6 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-
-<style>
-.error {
-	color: #ff0000;
-}
-
-.errorblock {
-	color: #000;
-	background-color: #ffEEEE;
-	border: 3px solid #ff0000;
-	padding: 8px;
-	margin: 16px;
-}
-</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <sec:authorize access="hasRole('ROLE_ADMIN')">
@@ -69,8 +55,8 @@
 			</script>
 	
 
-<div class="wrapper">
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
+			<div class="wrapper">
+<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -238,8 +224,7 @@
           </ul>
         </li>
         
-        
-            
+              
     <%--
       <li class="treeview">
           <a href="#">
@@ -276,108 +261,130 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-  </c:if>
- 
-  
+</c:if>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
      
       <ol class="breadcrumb">
-       <li><a href="${contextPath}"><i class="fa fa-home"></i> Home</a></li>
-        <li>Clients
+        <li><a href="${contextPath}"><i class="fa fa-home"></i> Home</a></li>
+         <li>Users
         </li>
-        <li class="active"> New Client
+        <li class="active">List Users
         </li>
       </ol>
     </section>
 
-   
+ 
 
+
+
+	  
+<br>
+<br>
+<c:if test="${not empty msg}">
+		<tr>
+			<td colspan="2" align="center">${msg}</td>
+		</tr>
+	</c:if>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+
+          <div class="box">
+            <div class="box-header">
+           <h3>Users List</h3>
+	<c:if test="${!empty userlist}">
+
+            <div class="box-body no-padding">
+              
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+				<th>S.No</th>
+				<th>User Name</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Telephone</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+				<th>&nbsp;</th>
+			</tr>
+                </thead>
+                <tbody>
+               
+                  <c:set var="sno" value = "0"/>
+			<c:forEach items="${userlist}" var="userDetail">
+				<tr>
+				<td><c:set var="sno" value = "${sno+1 }"/>
+				<c:out value="${sno }"/></td>
+				<td>${userDetail.username}</td>
+					<td>${userDetail.fullname}</td>
+					<td>${userDetail.mailid}</td>
+					<td>${userDetail.mobileno}</td>
+					<td><a href="${contextPath}/loadUserdetail?user=${userDetail.username}">Update</a></td>
+					<td><a href="${contextPath}/deleteUser?user=${userDetail.username}">Delete</a></td>
+					<td><a href="${contextPath}/detailUser?user=${userDetail.username}">Details</a></td>
+				</tr>
+			</c:forEach>
+            
+                </tbody>
+               
+		
+                
+              </table>
+            </div>
+            <!-- /.box-body -->
+            </div>
+            </c:if>
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+ 
+  
 <!-- jQuery 2.2.0 -->
 <script src="resources/plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="resources/bootstrap/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="resources/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="resources/plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="resources/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="resources/dist/js/app.min.js"></script>
-<!-- Sparkline -->
-<script src="resources/plugins/sparkline/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
-<script src="resources/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="resources/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- SlimScroll 1.3.0 -->
-<script src="resources/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- ChartJS 1.0.1 -->
-<script src="resources/plugins/chartjs/Chart.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="resources/dist/js/pages/dashboard2.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="resources/dist/js/demo.js"></script>
+<!-- page script -->
+<script>
+  $(function () {
+    $("#example1").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
+</div>
 
-
-			<c:if test="${not empty msg}">
-				<div class="msg">${msg}</div>
-			</c:if>
-	<div align="center">
-		<form:form action="doChangePassword" method="post"
-			commandName="changePasswordForm">
-		<div class="login-box">
-  
-  <div class="login-box-body">
-		
-          <div class="box box-primary">
-            <div class="box-header with-border">
-                 <h3 class="box-title">Change Password</h3>
-            
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            
-              <div class="box-body">
-                <div class="form-group">
-                  
-<form:input path="username" placeholder="Username" class="form-control"/>                   
-                  </div>
-              
-               
-                <div class="form-group">
-                 
- <form:input path="oldPassword" placeholder="Old Password" class="form-control"/>                   
-                  </div>
-              
-               
-                
-                 <div class="form-group">
-                 
- <form:input path="newPassword" placeholder="New Password" class="form-control"/>                   
-                 
-                </div>
-                
-                
-                 <div class="form-group">
-             
- <form:input path="confirmPassword" placeholder="Confirm Password" class="form-control"/>                   
-                  </div>
-              
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-         
-                <button type="submit" class="btn btn-primary pull-center">Change Password</button>
-				<button type="reset" class="btn btn-primary pull-center">Reset</button>             
-	</div>
-	</div>
-	</div>
-	</div>
-	<br>
-		</form:form>
-	</div>
-			</div>
-			
-			 <footer class="main-footer">
+  <footer class="main-footer">
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0.0
     </div>
@@ -385,7 +392,6 @@
     reserved.
   </footer>
   </div>
-  
-	</sec:authorize>
+</sec:authorize>
 </body>
 </html>

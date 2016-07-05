@@ -318,110 +318,67 @@
 			commandName="invoiceitemdetailForm">
 			<form:hidden path="product_ID" 
 							value="${invoiceitemdetailForm.getProduct_ID()}" />
-							<br>
-				<br>
-				 <div class="box box-primary">
+					
+		<div class="login-box">
+  
+  <div class="login-box-body">
+		
+          <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Update Invoice Item</h3>
+                         <h3 class="box-title">Update Invoice Item</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             
               <div class="box-body">
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Invoice Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="invoicenumber" class="form-control" value="${invoiceitemdetailForm.getInvoicenumber()}"/>
-                   
-                  </div>
+               
+                 <form:input path="invoicenumber" placeholder="Invoice Number" class="form-control" value="${invoiceitemdetailForm.getInvoicenumber()}"/>
+                 
               
                 </div>
                 
                 
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Quantity:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="qty" class="form-control"/>
-                  <form:input path="qty" class="form-control"/>
-                   
+                  <div class="form-group">
+              
+ <form:input path="qty" id="qty1" placeholder="Quantity" class="form-control"/>
+                  <form:input path="qty" id="qty2" placeholder="Unit" class="form-control"/>                   
                   </div>
               
-                </div>
-                
+             
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Unit Rate:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="unitrate" class="form-control"/>
-                   
-                  </div>
-              
+                 
+ <form:input path="unitrate" id="unitrate" placeholder="Unitrate" class="form-control"/>                 
                 </div>
                 
+                   <div class="form-group">
+             
+ <form:input path="tax" id="tax" placeholder="Tax" class="form-control"/>                  </div>
                 
                  <div class="form-group">
-                  <label class="col-sm-2 control-label">Tax:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="tax" class="form-control"/>
-                   
-                  </div>
+             
+  <form:input path="taxamount" id="taxamount" placeholder="Tax Amount" class="form-control"/>				</div>
+                  
+                 
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalprice" id="totalprice" placeholder="Total Price" class="form-control"/>     				</div>
+                  
+                    <div class="form-group">
+             
+ <form:input path="totalpricetax" id="totalpricetax" placeholder="Total Price (With tax)" class="form-control"/>  					</div>
               
-                </div>
-                
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Tax Amount:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="taxamount" class="form-control"/>
-                   
-                  </div>
+               <div class="form-group">
+             
+  <form:input path="serialnumber" id="serialnumber" placeholder="Serial Number" class="form-control"/>              
               
-                </div>
-                
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Total Price:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="totalprice" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Total Price (With tax):</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="totalpricetax" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">Serial Number:</label>
-
-                  <div class="col-sm-10">
-                 <form:input path="serialnumber" class="form-control"/>
-                   
-                  </div>
-              
-                </div>
-                
-              </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-         
-                <button type="submit" class="btn btn-primary pull-center">Update Invoice Item</button>
-              </div>
-         
-          </div>
+      
+	</div>
+	</div>
+	</div>
+	
+	</div>						
 		</form:form>
 	</div>
 	</sec:authorize>

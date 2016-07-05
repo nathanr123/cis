@@ -37,11 +37,11 @@ public class ComponentDAOEx implements ComponentDAO {
 	}
 
 	@Override
-	public boolean saveComponent(Component emp) {
+	public boolean saveComponent(Component component) {
 		try {
 			
 
-			getCurrentSession().save(emp);
+			getCurrentSession().save(component);
 
 			return true;
 
@@ -53,9 +53,9 @@ public class ComponentDAOEx implements ComponentDAO {
 	}
 
 	@Override
-	public boolean updateComponent(Component emp) {
+	public boolean updateComponent(Component component) {
 		try {
-			getCurrentSession().update(emp);
+			getCurrentSession().update(component);
 			return true;
 		} catch (Exception e) {
 		
@@ -67,9 +67,9 @@ public class ComponentDAOEx implements ComponentDAO {
 	 
 
 		@Override
-		public Component getComponentById(String emp) {
-			Component empl = (Component) getCurrentSession().get(Component.class, emp);
-			return empl;
+		public Component getComponentById(String component) {
+			Component components = (Component) getCurrentSession().get(Component.class, component);
+			return components;
 		}
 
 		/*
@@ -88,16 +88,16 @@ public class ComponentDAOEx implements ComponentDAO {
 		@Override
 		public List<Component> listComponent(List<String> grpList) {
 			if (grpList != null) {
-				List<Component> userGroupList = new ArrayList<Component>();
+				List<Component> componentList = new ArrayList<Component>();
 
 				for (Iterator<String> iterator = grpList.iterator(); iterator
 						.hasNext();) {
 					String group = iterator.next();
 
-					userGroupList.add(getComponentById(group));
+					componentList.add(getComponentById(group));
 
 				}
-				return userGroupList;
+				return componentList;
 			} else
 				return null;
 		}
@@ -115,36 +115,36 @@ public class ComponentDAOEx implements ComponentDAO {
 	
 	
 	@Override
-	public boolean removeComponent(String employeename) {
+	public boolean removeComponent(String component) {
 
-		return deleteAllComponentRecords(employeename);
+		return deleteAllComponentRecords(component);
 	}
 
-	private String getDeleteQuery(String table, String empname) {
+	private String getDeleteQuery(String table, String component) {
 
 		return String.format("DELETE FROM %s WHERE comp_ID= \'%s\'", table,
-				empname);
+				component);
 	}
 
-	private List<String> getAllDeletingQueries(String empname) {
+	private List<String> getAllDeletingQueries(String component) {
 
 		List<String> qryList = new ArrayList<String>();
 
 		Iterator<String> it = getAllComponentChildNames().iterator();
 
 		while (it.hasNext()) {
-			qryList.add(getDeleteQuery(it.next(), empname));
+			qryList.add(getDeleteQuery(it.next(), component));
 		}
 
 		return qryList;
 	}
 
-	private boolean deleteAllComponentRecords(String empname) {
+	private boolean deleteAllComponentRecords(String component) {
 
 		try {
 			Session session = getCurrentSession();
 
-			List<String> it = getAllDeletingQueries(empname);
+			List<String> it = getAllDeletingQueries(component);
 
 			for (Iterator<String> iterator = it.iterator(); iterator.hasNext();) {
 

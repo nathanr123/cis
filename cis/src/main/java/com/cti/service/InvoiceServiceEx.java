@@ -29,8 +29,8 @@ public class InvoiceServiceEx implements InvoiceService {
 	 * @see com.cti.service.UserService#saveUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean saveInvoice(Invoice it) {
-		return InvoiceDAO.saveInvoice(it);
+	public boolean saveInvoice(Invoice invoice) {
+		return InvoiceDAO.saveInvoice(invoice);
 
 	}
 
@@ -40,8 +40,8 @@ public class InvoiceServiceEx implements InvoiceService {
 	 * @see com.cti.service.UserService#updateUser(com.cti.model.User)
 	 */
 	@Override
-	public boolean updateInvoice(Invoice it) {
-		return InvoiceDAO.updateInvoice(it);
+	public boolean updateInvoice(Invoice invoice) {
+		return InvoiceDAO.updateInvoice(invoice);
 
 	}
 
@@ -51,8 +51,8 @@ public class InvoiceServiceEx implements InvoiceService {
 	 * @see com.cti.service.UserService#removeUser(java.lang.String)
 	 */
 	@Override
-	public boolean removeInvoice(String it) {
-		return InvoiceDAO.removeInvoice(it);
+	public boolean removeInvoice(String invoice) {
+		return InvoiceDAO.removeInvoice(invoice);
 	}
 	
 	@Override
@@ -66,8 +66,8 @@ public class InvoiceServiceEx implements InvoiceService {
 	 * @see com.cti.service.UserService#getUserById(java.lang.String)
 	 */
 	@Override
-	public Invoice getInvoiceById(String it) {
-		return InvoiceDAO.getInvoiceById(it);
+	public Invoice getInvoiceById(String invoice) {
+		return InvoiceDAO.getInvoiceById(invoice);
 	}
 
 	/*

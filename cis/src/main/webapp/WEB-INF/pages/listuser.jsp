@@ -323,9 +323,9 @@
 					<td>${userDetail.fullname}</td>
 					<td>${userDetail.mailid}</td>
 					<td>${userDetail.mobileno}</td>
-					<td><a href="${contextPath}/loadUserdetail?user=${userDetail.username}">Update</a></td>
-					<td><a href="${contextPath}/deleteUser?user=${userDetail.username}">Delete</a></td>
-					<td><a href="${contextPath}/detailUser?user=${userDetail.username}">Details</a></td>
+					<td><a href="${contextPath}/loadUserdetail?user=${userDetail.username}"><i class="fa fa-refresh"></i></a></td>
+					<td><a href="${contextPath}/deleteUser?user=${userDetail.username}"><i class="fa fa-trash-o"></i></a></td>
+					<td><a href="${contextPath}/detailUser?user=${userDetail.username}"><i class="fa fa-info"></i></a></td>
 				</tr>
 			</c:forEach>
             

@@ -6,13 +6,13 @@ import com.cti.model.Items;
 
 public interface ItemsDAO {
 	
-	public boolean saveItems(Items emp);
+	public boolean saveItems(Items items);
 	
-	public boolean updateItems(Items emp);
+	public boolean updateItems(Items items);
 	
-	public boolean removeItems(String empname);
+	public boolean removeItems(String items);
 	
-	public Items getItemsById(String empname);
+	public Items getItemsById(String items);
 	
 	public String getLatestItemsID();
 

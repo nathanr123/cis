@@ -8,13 +8,13 @@ import com.cti.model.Purchase;
 
 public interface PurchaseDAO {
 	
-	public boolean savePurchase(Purchase emp);
+	public boolean savePurchase(Purchase purchase);
 	
-	public boolean updatePurchase(Purchase emp);
+	public boolean updatePurchase(Purchase purchase);
 	
-	public boolean removePurchase(String empname);
+	public boolean removePurchase(String purchase);
 	
-	public Purchase getPurchaseById(String empname);
+	public Purchase getPurchaseById(String purchase);
 	
 	public String getLatestPurchaseID();
 

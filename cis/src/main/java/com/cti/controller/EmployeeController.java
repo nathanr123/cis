@@ -210,7 +210,7 @@ public class EmployeeController {
 
 		iddigit++;
 
-		String str = String.format("ENG%04d", iddigit);  
+		String str = String.format("EMP%04d", iddigit);  
 
 		return str;
 

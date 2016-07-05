@@ -21,5 +21,8 @@ public boolean savePurchaseitemdetail(Purchaseitemdetail pur);
 
 	public List<Purchaseitemdetail> listPurchaseitemdetail();	
 	
+	public List<Purchaseitemdetail> listPurchaseitemdetail(String pur);	
+
+	
 	public List<Purchaseitemdetail> listPurchaseitemdetail(List<String> PurchaseitemdetailList);
 }

@@ -55,8 +55,8 @@
 				}
 			</script>
 
-			<c:if test="${pageContext.request.userPrincipal.name != null}">
 <div class="wrapper">
+			<c:if test="${pageContext.request.userPrincipal.name != null}">
 
   <header class="main-header">
 
@@ -225,7 +225,9 @@
         </li>
         
         
-        <li class="treeview">
+          
+    <%--
+      <li class="treeview">
           <a href="#">
             <i class="fa fa-briefcase"></i>
             <span>Jobs</span>
@@ -250,13 +252,16 @@
             <li><a href="#"><i class="fa fa-circle-o text-aqua"></i>Warrant Based</a></li>
           </ul>
         </li>
-        
+       
+        --%>    
+       
+
              </ul>
              
     </section>
     <!-- /.sidebar -->
   </aside>
-
+</c:if>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -272,7 +277,7 @@
     </section>
 
 
-</c:if>
+
 <br>
 <br>
 <c:if test="${not empty msg}">
@@ -319,8 +324,8 @@
 					<td>${employeeDetail.empname}</td>
 					<td>${employeeDetail.empnumber}</td>
 					<td>${employeeDetail.empmobileno}</td>
-					<td> <a href="${contextPath}/loadEmployee?employee=${employeeDetail.empid}">Update</a></td>
-					<td><a href="${contextPath}/deleteEmployee?employee=${employeeDetail.empid}">Delete</a></td>
+					<td> <a href="${contextPath}/loadEmployee?employee=${employeeDetail.empid}"><i class="fa fa-refresh"></i></a></td>
+					<td><a href="${contextPath}/deleteEmployee?employee=${employeeDetail.empid}"><i class="fa fa-trash-o"></i></a></td>
 				</tr>
 			</c:forEach>
 		
@@ -372,7 +377,16 @@
     });
   });
 </script>
+</div>
 
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Version</b> 1.0.0
+    </div>
+    <strong>Copyright &copy; 2016 <a href="${contextPath}">Cornet Technology India Pvt Ltd</a>.</strong> All rights
+    reserved.
+  </footer>
+  </div>
 </sec:authorize>
 
 </body>

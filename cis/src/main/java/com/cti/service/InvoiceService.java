@@ -11,13 +11,13 @@ import com.cti.model.Purchase;
 @Transactional
 public interface InvoiceService {
 	
-public boolean saveInvoice(Invoice pur);
+public boolean saveInvoice(Invoice invoice);
 	
-	public boolean updateInvoice(Invoice pur);
+	public boolean updateInvoice(Invoice invoice);
 	
-	public boolean removeInvoice(String purname);
+	public boolean removeInvoice(String invoice);
 	
-	public Invoice getInvoiceById(String purname);
+	public Invoice getInvoiceById(String invoice);
 	
 	public String getLatestInvoiceID();
 

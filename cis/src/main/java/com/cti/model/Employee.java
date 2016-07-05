@@ -31,7 +31,7 @@ public class Employee implements Serializable {
 
 	private String empname;
 
-	private int empage;
+	private String empage;
 	
 	private String empnumber;
 
@@ -57,7 +57,7 @@ public class Employee implements Serializable {
 	public Employee() {
 	}
 
-	public Employee(String empid, String empname, String empnumber, int empage, String empgender,Date empdob, String empaddr, String empcommaddr, String empmobileno, Date createdtime, Date modifiedtime) {
+	public Employee(String empid, String empname, String empnumber, String empage, String empgender,Date empdob, String empaddr, String empcommaddr, String empmobileno, Date createdtime, Date modifiedtime) {
 
 		this.empid = empid;
 		
@@ -116,7 +116,7 @@ public class Employee implements Serializable {
 	 * @return the empage
 	 */
 	@Column(name = "empage", nullable = false, length = 3)
-	public int getEmpage() {
+	public String getEmpage() {
 		return empage;
 	}
 	/**
@@ -202,7 +202,7 @@ public class Employee implements Serializable {
 	 * @param empage
 	 *            the empage to set
 	 */
-	public void setEmpage(int empage) {
+	public void setEmpage(String empage) {
 		this.empage = empage;
 	}
 	/**
